@@ -52,6 +52,7 @@ $education=$_POST["education"];
 $phoneNumber=$_POST["phone_number"];
 $nationalCode=$_POST["nationalCode"];
 echo "<br>".$firstName."<br>".$lastName."<br>".$fatherName."<br>".$birthDate."<br>".$education."<br>".$phoneNumber."<br>".$nationalCode."<br>";
+
 $newstudent=$pdo->prepare ("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
 education,phone_number,membership_date) 
 value(:first_name,:last_name,:national_code,:father_name,:birth_date,:education,:phone_number,curdate())");
