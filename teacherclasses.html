@@ -1,0 +1,38 @@
+<?php
+session_start();
+require_once("connection.php");
+$firstName = $_POST["first_name"];
+$lastName = $_POST["last_name"];
+$nationalCode = $_POST["nationalcode"];
+$rememberme = $_POST["rememberme"];
+$teachers = $pdo->prepare("SELECT class_start,class_day,class_end FROM classes join teachers on teachers.id=classes.teacher_id where teachers.first_name=:firstname and teachers.last_name=:lastname
+ and teachers.national_code=:nationalcode");
+$teachers->execute(["firstname"=>"$firstName", "lastname"=> "$lastName", "nationalcode"=>"$nationalCode"]);
+$teachers=$teachers->fetchAll(PDO::FETCH_ASSOC);
+// print_r($n);
+// foreach ($teachers as $teacher) {echo $teacher.'<br>';}
+
+?>
+<html>
+    <table>
+        <tr>
+            <td>ساعت شروع کلاس</td>
+            <td>ساعت پایان کلاس</td>
+            <td>روز کلاس</td>
+        </tr>
+        <?php if (!empty($teachers)) {
+    foreach ($teachers as $teacher) {
+        echo "<tr>";
+        echo "<td>" . $teacher['class_start'] . "</td>";
+        echo "<td>" . $teacher['class_end'] . "</td>";
+        echo "<td>" . $teacher['class_day'] . "</td>";
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='3'>هیچ کلاسی برای این معلم ثبت نشده است.</td></tr>";
+}
+?>
+    
+    
+    </table>
+</html>

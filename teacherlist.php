@@ -1,4 +1,8 @@
+<?php  
+session_start();
+?>
 <html>
+
     <head>
         <title>teacherlist</title>
         <link rel="stylesheet" href="css/style.css">
@@ -15,7 +19,7 @@
     <body>
         <div class="teacherbox">
             <p class="teachertitle">نام</p>
-            <form method="post">
+            <form action= "" method="post">
 <input type="text" id="first_name" name="first_name" class="teacherform" placeholder="نام خود را وارد کنید">
 <label for="first_name"></label>
 <p class="teachertitle">نام خانوادگی</p>
@@ -51,6 +55,15 @@ $birthDate=$_POST["birth_date"];
 $education=$_POST["education"];
 $phoneNumber=$_POST["phone_number"];
 $nationalCode=$_POST["nationalCode"];
+
+$firstName=$_SESSION["first_name"];
+$lastName=$_SESSION["last_name"];
+$fatherName=$_SESSION["father_name"];
+$birthDate=$_SESSION["birth_date"];
+$education=$_SESSION["education"];
+$phoneNumber=$_SESSION["phone_number"];
+$nationalCode=$_SESSION["nationalCode"];
+
 echo "<br>".$firstName."<br>".$lastName."<br>".$fatherName."<br>".$birthDate."<br>".$education."<br>".$phoneNumber."<br>".$nationalCode."<br>";
 
 $newstudent=$pdo->prepare ("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
