@@ -17,7 +17,7 @@ session_start();
 <body>
     <div class="box2">
         <p class="title5">نام</p>
-        <form action="http://localhost/school/mainmenu.php" method="post">
+        <form method="post">
             <input type="text" id="first_name" name="first_name" class="form4" placeholder="نام خود را وارد کنید">
             <label for="first_name"></label>
             <p class="title5">نام خانوادگی</p>
@@ -43,17 +43,24 @@ session_start();
         </form>
     </div>
 </body>
+
+</html>
 <?php
 require_once("connection.php");
- $_POST["first_name"];
- $_POST["last_name"];
- $_POST["nationalcode"];
+$_POST["first_name"];
+$_POST["last_name"];
+$_POST["nationalcode"];
 
 
- $_SESSION["first_name"] = $_POST["first_name"];
- $_SESSION["last_name"] = $_POST["last_name"];
- $_SESSION["nationalcode"] = $_POST["nationalcode"];
+$_SESSION["first_name"] = $_POST["first_name"];
+$_SESSION["last_name"] = $_POST["last_name"];
+$_SESSION["nationalcode"] = $_POST["nationalcode"];
 
-
+$teacher = $pdo->prepare('select * from teachers where first_name=:first_name AND last_name=:last_name AND national_code=:national_code');
+$teacher->execute(["first_name" => $_POST["first_name"],"last_name" => $_POST["last_name"],"national_code" => $_POST["nationalcode"]]);
+$x = $teacher->fetchAll();
+if ($x) {
+    header("location:mainmenu.php");
+    exit; 
+} else{ echo'<p style="color:red;">کاربری با این نام وجود ندارد</p>';}
 ?>
-</html>

@@ -71,5 +71,6 @@ education,phone_number,membership_date)
 value(:first_name,:last_name,:national_code,:father_name,:birth_date,:education,:phone_number,curdate())");
 $newstudent->execute(["first_name"=>"$firstName","last_name"=>"$lastName","national_code"=>"$nationalCode",
 "father_name"=>"$fatherName","phone_number"=>"$phoneNumber","education"=>"$education","birth_date"=>"$birthDate"]);
-
+    header("location:mainmenu.php");
+    exit; 
 ?>
