@@ -6,30 +6,7 @@ $lastName = $_SESSION["last_name"];
 $nationalCode = $_SESSION["nationalcode"];
 
 $result = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $classid = $_POST['class'];
-    $mark = $_POST['mark'];
-    $students = $pdo->prepare('select * from students where first_name=:first_name and last_name=:last_name');
-    $students->execute(['first_name' => $first_name, 'last_name' => $last_name]);
-    $student = $students->fetch();
-    if ($student) {
-        $id = $student['id'];
 
-
-
-        $newmark = $pdo->prepare('insert into student_mark (student_id,student_class_id,mark)
-value(:student_id,:class,:mark)');
-        $correct = $newmark->execute(['class' => $classid, 'mark' => $mark, 'student_id' => $id['id']]);
-        if ($correct) {
-            $result = '<p class="correct">نمره با موفقیت ثبت شد</p>';
-        } else {
-
-            $result = '<p class="correct">ثبت نمره با خطا مواجه شد</p>';
-        }
-    }
-}
 ?>
 
 <html>
@@ -61,3 +38,29 @@ value(:student_id,:class,:mark)');
 </body>
 
 </html>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $classid = $_POST['class'];
+    $mark = $_POST['mark'];
+    $students = $pdo->prepare('select * from students where first_name=:first_name and last_name=:last_name');
+    $students->execute(['first_name' => $first_name, 'last_name' => $last_name]);
+    $student = $students->fetch();
+    if ($student) {
+        $id = $student['id'];
+
+$newmark = $pdo->prepare("INSERT INTO student_mark (student_id, student_class_id, mark)
+VALUES (:student_id, :class, :mark)");
+$correct=$newmark->execute(["student_id"=>$id,"class"=>$classid,"mark"=>$mark]);
+        if ($correct) {
+            $result = '<p class="correct">نمره با موفقیت ثبت شد</p>';
+        } else {
+
+            $result = '<p class="error">ثبت نمره با خطا مواجه شد</p>';
+        }
+    }
+}else{
+    echo '<p class="error">لطفا همه ی فیلد هارا پر کنید</p>';
+}
+?>
