@@ -54,14 +54,11 @@
 </html>
 <?php
 require_once "connection.php";
-// $students=$pdo-> query('select first_name from students');
-// $x=$students->fetchAll();
-// print_r($x);
 $username=$_POST["username"];
 $password=$_POST["password"];
 $fathername=$_POST["fathername"];
 $nationalCode=$_POST["nationalCode"];
-$level=$_POST["level"];
+
 echo $username.'<br>'.$password.'<br>'.$fathername.'<br>'.$nationalCode.'<br>'.$level.'<br>';
 if(empty($username)){echo '<p style="color:rgb(225, 89, 89); font-size: 13px;">خطا:نام کاربری را وارد کنید</p>';}
 $newstudent=$pdo->prepare('insert into students(first_name,password,father_name,national_code,level)
