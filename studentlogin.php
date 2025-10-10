@@ -12,6 +12,7 @@ session_start();
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
+            font-size: 19px;
         }
 
         ::placeholder {
@@ -46,9 +47,9 @@ session_start();
                     placeholder="کد ملی خود را وارد کنید">
                 <label for="nationalCode"></label>
                 <p class="title4">تاریخ تولد</p>
-                <input type="date" id="birth_date" name="birthdate" class="schoolform"
+                <input type="date" id="birth_date" name="birth_date" class="schoolform"
                     placeholder="تاریخ تولد خود را وارد کنید">
-                <label for="birthdate"></label>
+                <label for="birth_date"></label>
                 <input type="submit" id="submit" name="submit" class="submit2" value="ثبت نام">
                 <label for="submit"></label>
             </form>
@@ -65,6 +66,7 @@ $password = $_POST["password"];
 $fathername = $_POST["fathername"];
 $nationalCode = $_POST["nationalCode"];
 $birth_date = $_POST["birth_date"];
+$hashedPassword= password_hash($password,PASSWORD_DEFAULT);
 echo $first_name . '<br>' . $password . '<br>' . $fathername . '<br>' . $nationalCode . '<br>'. $birth_date;
 if (empty($first_name)) {
     echo '<p style="color:rgb(225, 89, 89); font-size: 13px;">خطا:نام کاربری را وارد کنید</p>';
@@ -79,5 +81,8 @@ $newstudent->execute([
     "birth_date" => "$birth_date",
     "last_name" => "$last_name"
 ]);
-$hashedPassword= password_hash($password,PASSWORD_DEFAULT);
+
+header("location:studentmenu.php");
+exit;
+
 ?>

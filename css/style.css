@@ -406,18 +406,17 @@ body {
     width: cover;
     height: 70px;
     margin-top: 30px;
- padding-bottom: auto;
+    padding-bottom: auto;
     padding-top: 35px;
-    
 }
 
-.head{
+.head {
     text-align: center;
     margin-top: 10px;
     color: rgb(2, 2, 164);
 }
 
-.contactbox{
+.contactbox {
     width: 300px;
     height: 100px;
     border-radius: 5px;
@@ -425,36 +424,37 @@ body {
 
 }
 
-.mainfooter{
-        background-color: rgb(2, 2, 164);
+.mainfooter {
+    background-color: rgb(2, 2, 164);
     text-align: right;
     direction: rtl;
     width: cover;
     height: 70px;
     margin-top: 30px;
- padding-bottom: auto;
+    padding-bottom: auto;
     padding-top: 35px;
-    
-}
-@font-face {
-  font-family: 'Vazirmatn';
-  src: url('fonts/variable/Vazirmatn[wght].ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+
 }
 
-.box3{
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('fonts/variable/Vazirmatn[wght].ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.box3 {
     width: 300px;
     height: 300px;
     border: 1.5px rgb(139, 188, 230) solid;
     border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
+    margin-top: 90px;
     text-align: right;
 }
 
-.marktitle{
+.marktitle {
     background-color: rgb(139, 188, 230);
     margin-left: auto;
     margin-right: auto;
@@ -465,8 +465,10 @@ body {
     width: 150px;
     height: 40px;
     padding-top: 10px;
+    padding-bottom: 10px;
 }
-.markform{
+
+.markform {
     width: 250px;
     height: 30px;
     border: 1.5px rgb(139, 188, 230) solid;
@@ -476,10 +478,11 @@ body {
     margin-right: 20px;
     margin-top: 10px;
 }
-.marksubmit{
+
+.marksubmit {
     margin-left: auto;
     margin-right: 20px;
-    margin-top: 10px; 
+    margin-top: 10px;
     text-align: center;
     background-color: rgb(77, 77, 196);
     border-radius: 1px;
@@ -490,31 +493,123 @@ body {
     border: rgb(77, 77, 196);
 }
 
-.correct{
-        background-color: rgb(0, 128, 0);
+.correct {
+    background-color: rgb(0, 128, 0);
     width: 230px;
     height: 29px;
     text-align: center;
     font-size: 15px;
     margin-top: 0%;
     direction: rtl;
-    margin-right: 395px;
+    margin-left: 900px;
+    margin-right: 10px;
     outline: none;
     box-shadow: none;
     border: rgb(0, 128, 0);
+    margin-top: 15px;
 }
 
-.error{
-            background-color: rgb(248, 81, 81);
+.error {
+    background-color: rgb(248, 81, 81);
     width: 230px;
     height: 29px;
     text-align: center;
     font-size: 15px;
     margin-top: 0%;
     direction: rtl;
-    margin-right: 395px;
+    margin-left: 900px;
+    margin-right: 10px;
     outline: none;
     box-shadow: none;
-    border: rgb( 248 , 81, 81);
+    border: rgb(248, 81, 81);
 }
 
+.note {
+    background-color: rgb(163, 0, 0);
+    width: 260px;
+    height: 45px;
+    text-align: right;
+    font-size: 15px;
+    margin-top: 0%;
+    direction: rtl;
+    margin-left: 870px;
+    margin-right: 10px;
+    outline: none;
+    box-shadow: none;
+    border: rgb(163, 0, 0);
+}
+
+.image {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.form6{
+        width: 230px;
+    height: 38px;
+    border: 1.5px rgb(230, 231, 237) solid;
+    border-radius: 10px;
+    padding-right: 10px;
+    direction: rtl;
+    text-align: right;
+}
+
+.box4{
+        height: 340px;
+    background-color: white;
+    width: 280px;
+    border: white solid 2px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.title6{
+        margin-bottom: 5px;
+    font-size: 13px;
+    margin-top: 5px;
+    color: rgb(178, 176, 176);
+    text-align: right;
+    direction: rtl;
+    margin-right: 45px;
+}
+
+.divc{
+        justify-content: left;
+    margin-left: 10px;
+    background-color: #dcdcdcaf;
+    height: 30px;
+    width: 40px;
+    border-radius: 4px;
+    text-align: center;
+    direction: ltr;
+    outline: none;
+    box-shadow: none;
+    border: #dcdcdcaf;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+ 
+.nextsubmit{
+    justify-content: left;
+    margin-left: 10px;
+    background-color: #6ff446af;
+    height: 30px;
+    width: 40px;
+    border-radius: 4px;
+    text-align: center;
+    direction: ltr;
+    outline: none;
+    box-shadow: none;
+    border: #6ff446af;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
