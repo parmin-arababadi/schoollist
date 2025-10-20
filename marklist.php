@@ -114,4 +114,3 @@ if ($correct) {
     echo '<p class="error">ثبت نمره با خطا مواجه شد</p>';
 }
 ?>
-?>

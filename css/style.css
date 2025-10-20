@@ -596,20 +596,3 @@ body {
     margin-bottom: 20px;
 }
  
-.nextsubmit{
-    justify-content: left;
-    margin-left: 10px;
-    background-color: #6ff446af;
-    height: 30px;
-    width: 40px;
-    border-radius: 4px;
-    text-align: center;
-    direction: ltr;
-    outline: none;
-    box-shadow: none;
-    border: #6ff446af;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
