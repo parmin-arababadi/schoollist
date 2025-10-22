@@ -67,7 +67,6 @@ $fathername = $_POST["fathername"];
 $nationalCode = $_POST["nationalCode"];
 $birth_date = $_POST["birth_date"];
 $hashedPassword= password_hash($password,PASSWORD_DEFAULT);
-echo $first_name . '<br>' . $password . '<br>' . $fathername . '<br>' . $nationalCode . '<br>'. $birth_date;
 if (empty($first_name)) {
     echo '<p style="color:rgb(225, 89, 89); font-size: 13px;">خطا:نام کاربری را وارد کنید</p>';
 }
@@ -87,5 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location:studentmenu.php");
     exit();
 }
-
+$_SESSION["first_name"] =$first_name;
+$_SESSION["last_name"] =$last_name;
 ?>

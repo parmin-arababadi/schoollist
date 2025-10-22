@@ -2,9 +2,9 @@
 session_start();
 require_once "connection.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $first_name = $_SESSION["first_name"] ?? '';
-    $last_name = $_SESSION["last_name"] ?? '';
-    $password = $_SESSION["password"] ?? '';
+    $first_name = $_SESSION["first_name"];
+    $last_name = $_SESSION["last_name"];
+    $password = $_SESSION["password"];
 }
 ?>
 <html>
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <header>
         <div class="head">
-            <h3>سلام <br><?php echo $_SESSION["first_name"]; ?> <br>عزیز! خوش آمدی</h3>
+            <h3>سلام <br><?php echo $first_name; ?> <br>عزیز! خوش آمدی</h3>
         </div>
         <div class="mainheader">
 
