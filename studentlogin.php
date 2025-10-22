@@ -82,7 +82,10 @@ $newstudent->execute([
     "last_name" => "$last_name"
 ]);
 
-header("location:studentmenu.php");
-exit;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   
+    header("Location:studentmenu.php");
+    exit();
+}
 
 ?>

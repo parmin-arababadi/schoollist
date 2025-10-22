@@ -56,21 +56,23 @@ $education=$_POST["education"];
 $phoneNumber=$_POST["phone_number"];
 $nationalCode=$_POST["nationalCode"];
 
-$firstName=$_SESSION["first_name"];
-$lastName=$_SESSION["last_name"];
-$fatherName=$_SESSION["father_name"];
-$birthDate=$_SESSION["birth_date"];
-$education=$_SESSION["education"];
-$phoneNumber=$_SESSION["phone_number"];
-$nationalCode=$_SESSION["nationalCode"];
-
-echo "<br>".$firstName."<br>".$lastName."<br>".$fatherName."<br>".$birthDate."<br>".$education."<br>".$phoneNumber."<br>".$nationalCode."<br>";
+$_SESSION["first_name"]=$_POST["first_name"];
+$_SESSION["last_name"]=$_POST["last_name"];
+$_SESSION["father_name"]=$_POST["father_name"];
+$_SESSION["birth_date"]=$_POST["birth_date"];
+$_SESSION["education"]=$_POST["education"];
+$_SESSION["phone_number"]=$_POST["phone_number"];
+$_SESSION["nationalCode"]=$_POST["nationalCode"];
 
 $newstudent=$pdo->prepare ("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
 education,phone_number,membership_date) 
-value(:first_name,:last_name,:national_code,:father_name,:birth_date,:education,:phone_number,curdate())");
-$newstudent->execute(["first_name"=>"$firstName","last_name"=>"$lastName","national_code"=>"$nationalCode",
-"father_name"=>"$fatherName","phone_number"=>"$phoneNumber","education"=>"$education","birth_date"=>"$birthDate"]);
-    header("location:mainmenu.php");
-    exit; 
+valueS(:first_name,:last_name,:national_code,:father_name,:birth_date,:education,:phone_number,curdate())");
+$newstudent->execute([":first_name"=>"$firstName",":last_name"=>"$lastName",":national_code"=>"$nationalCode",
+":father_name"=>"$fatherName",":phone_number"=>"$phoneNumber",":education"=>"$education",":birth_date"=>"$birthDate"]);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   
+    header("Location: mainmenu.php");
+    exit();
+}
+
 ?>

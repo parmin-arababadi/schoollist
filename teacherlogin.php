@@ -35,7 +35,7 @@ session_start();
                     style="transform: scale(1); margin-bottom: 0.5;">
                 <label for="rememberme" class="rememberme">مرا به یاد داشته باش</label>
 
-                <a class="forgetpassword2" href="C:\xampp\htdocs\school\teacherlist.html">ثبت نام نکردید؟</a>
+                <a class="forgetpassword2" href="teacherlist.php">ثبت نام نکردید؟</a>
 
             </div>
             <input type="submit" id="submit" name="submit" class="teacherlogin" value="ورود">
