@@ -46,6 +46,7 @@ session_start();
 </html>
 <?php
 require_once("connection.php");
+if (isset($_POST["submit"])){
 $first_name = $_POST["first_name"];
 $last_name = $_POST["last_name"];
 $password = $_POST["password"];
@@ -72,5 +73,6 @@ if ($x){
 }
 }else{
     echo '<p class="error"> کاربری با این نام وجود ندارد </p>';
+}
 }
 ?>
