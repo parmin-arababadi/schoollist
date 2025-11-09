@@ -6,6 +6,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $last_name = $_SESSION["last_name"];
     $password = $_SESSION["password"];
 }
+if (!isset($_SESSION['first_name'],$_SESSION['password'],$_SESSION['last_name'])){
+    header("location:studentlogin.php");
+    exit;
+}
 ?>
 <html>
 

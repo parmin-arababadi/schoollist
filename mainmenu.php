@@ -4,6 +4,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $first_name = $_SESSION["first_name"] ?? '';
     $last_name = $_SESSION["last_name"] ?? '';
     $nationalcode = $_SESSION["nationalcode"] ?? '';
+if (!isset($_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'])) {
+    header("location:studentlogin.php");
+    exit;
 }
 ?>
 

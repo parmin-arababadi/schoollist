@@ -64,7 +64,7 @@ $last_name = $_SESSION['last_name'];
             <input type="text" name="slast_name" id="slast_name" class="form6"
                 placeholder="نام خانوادگی خود را وارد کنید">
             <label for="slast_name"></label>
-            <input type="submit" name="submit" id="submit" class="divc" value=" ادامه">
+            <input type="submit" name="submit" id="submit" class="divc" value=" ادامه" style="margin-bottom: 10px;">
             <label for="submit"></label>
         </form>
     </div>

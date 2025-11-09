@@ -25,7 +25,6 @@ session_start();
             margin-right: 20px;
             direction: rtl;
             margin-bottom: 10px;
-            margin-top: 30px;
         }
 
         i {
@@ -52,27 +51,27 @@ session_start();
             </p>
             <p style="margin-top: 20px;">
                 <bold>همین امروز ثبت‌نام کنید و به جمع دانش‌آموزان موفق بپیوندید</bold>
-           <a href="studentlogin.php" class="sbmt">ثبت‌نام</a>
+                <a href="studentlogin.php" class="sbmt" >ثبت‌نام</a>
 
         </div>
-      
-           
+
+
     </div>
     <div class="indexheader">
         <img src="schoolicon2.jpg" class="logo">
-        <a href="studentsignup.php">
+        <a href="studentsignup.php" style="margin-top: 30px;">
             <i class='fas fa-child'></i>
             ورود دانش آموز
         </a>
-        <a style="display: inline-block; margin-bottom: 10px;" href="teacherlogin.php">
+        <a style="display: inline-block; margin-bottom: 10px;  margin-top: 30px;" href="teacherlogin.php">
             <i class='fa fa-male'></i>
             ورود معلم
         </a>
-        <a style="display: inline-block; margin-bottom: 10px;" href=".php">
+        <a style="display: inline-block; margin-bottom: 10px;  margin-top: 30px;" href=".php">
             <i class='fas fa-angle-left'></i>
             درباره ما
         </a>
-        <a href="#contact"><i class='fas fa-phone'></i>تماس با ما </a>
+        <a href="#contact" style=" margin-top: 30px;"><i class='fas fa-phone'></i>تماس با ما </a>
     </div>
 
 
@@ -95,10 +94,15 @@ session_start();
                 <i class='fas fa-phone'></i>
                 09916936013
             </a>
-            <div style="margin-top:10px; margin-right:15px;">
-                <i style="font-size: 30px;" class="fab fa-instagram"></i>
-                <i style="font-size: 30px;" class="fab fa-whatsapp"></i>
-                <i style="font-size: 30px;" class="fab fa-facebook"></i>
+            <div style="displey: block; margin-top:0px;">
+                <a href="mailto:schoolexample@yahoo.com">
+                    schoolexample@yahoo.com
+                </a>
+                <div style="margin-top:10px; margin-right:15px;">
+                    <i style="font-size: 30px;" class="fab fa-instagram"></i>
+                    <i style="font-size: 30px;" class="fab fa-whatsapp"></i>
+                    <i style="font-size: 30px;" class="fab fa-facebook"></i>
+                </div>
             </div>
         </div>
 </body>
