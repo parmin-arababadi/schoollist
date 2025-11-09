@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $last_name = $_SESSION["last_name"];
     $password = $_SESSION["password"];
 }
-if (!isset($_SESSION['first_name'],$_SESSION['password'],$_SESSION['last_name'])){
+if (!isset($_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'])) {
     header("location:studentlogin.php");
     exit;
 }
@@ -67,7 +67,7 @@ if (!isset($_SESSION['first_name'],$_SESSION['password'],$_SESSION['last_name'])
                 <img style=" width: 150px;
     height: 150px;
     border-radius: 20px; margin-right:15px; margin-top: 50px; margin-left: 0px;" src="newclass.png">
-                  <div style="margin-top: 10px; color:black;"> ثبت نام</div> 
+                <div style="margin-top: 10px; color:black;"> ثبت نام</div>
             </a>
             <a href="profile.php">
                 <img style="    width: 150px;

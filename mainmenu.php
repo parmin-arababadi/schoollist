@@ -1,11 +1,12 @@
 <?php
 session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $first_name = $_SESSION["first_name"] ?? '';
-    $last_name = $_SESSION["last_name"] ?? '';
-    $nationalcode = $_SESSION["nationalcode"] ?? '';
-if (!isset($_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'])) {
-    header("location:studentlogin.php");
+    $first_name = $_SESSION["first_name"];
+    $last_name = $_SESSION["last_name"];
+    $nationalcode = $_SESSION["nationalcode"];
+}
+if (!isset($_SESSION['first_name'], $_SESSION['nationalcode'], $_SESSION['last_name'])) {
+    header("location:teacherlogin.php");
     exit;
 }
 ?>
@@ -16,13 +17,14 @@ if (!isset($_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'
     <title>mainmenu</title>
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-       body{
-        font-family: 'Vazirmatn' ,sans-serif;
-       }
-       img {
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        img {
             width: 430px;
             height: 250px;
             border: 1.5px rgba(192, 192, 244, 1) solid;
