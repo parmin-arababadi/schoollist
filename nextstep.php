@@ -97,6 +97,7 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
                 <th>ساعت پایان</th>
                 <th>ساعت شروع </th>
                 <th>روز کلاس</th>
+                <th>نام درس</th>
                 <th>شماره کلاس</th>
             </tr>
             <?php

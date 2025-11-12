@@ -73,7 +73,7 @@ if (!isset($_SESSION['first_name'], $_SESSION['nationalcode'], $_SESSION['last_n
         <div id="marks">
             <a href="marklist.php">
                 <img src="School-Marks.jpg">
-                <div style="color: black; margin-top: 10px">لیست نمرات دانش آموزان من</div>
+                <div style="color: black; margin-top: 10px"> نمرات دانش آموزان من</div>
             </a>
         </div>
     </div>
