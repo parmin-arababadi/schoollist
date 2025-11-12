@@ -102,7 +102,7 @@ $studentclasses = $studentclass->fetchAll(PDO::FETCH_ASSOC);
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='3'>هیچ کلاسی برای این معلم ثبت نشده است.</td></tr>";
+            echo "<tr><td colspan='6'>هیچ کلاسی برای شما ثبت نشده است.</td></tr>";
         }
         ?>
     </table>

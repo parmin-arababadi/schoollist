@@ -51,7 +51,7 @@ session_start();
             </p>
             <p style="margin-top: 20px;">
                 <bold>همین امروز ثبت‌نام کنید و به جمع دانش‌آموزان موفق بپیوندید</bold>
-                <a href="studentlogin.php" class="sbmt" >ثبت‌نام</a>
+                <a href="studentsignup.php" class="sbmt" >ثبت‌نام</a>
 
         </div>
 
@@ -59,7 +59,7 @@ session_start();
     </div>
     <div class="indexheader">
         <img src="schoolicon2.jpg" class="logo">
-        <a href="studentsignup.php" style="margin-top: 30px;">
+        <a href="studentlogin.php" style="margin-top: 30px;">
             <i class='fas fa-child'></i>
             ورود دانش آموز
         </a>

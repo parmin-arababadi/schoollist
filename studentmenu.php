@@ -1,11 +1,11 @@
 <?php
 session_start();
 require_once "connection.php";
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
     $first_name = $_SESSION["first_name"];
     $last_name = $_SESSION["last_name"];
     $password = $_SESSION["password"];
-}
+
 if (!isset($_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'])) {
     header("location:studentlogin.php");
     exit;

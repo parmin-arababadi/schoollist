@@ -94,6 +94,7 @@ $nationalCode = $_SESSION["nationalcode"];
 
 </html>
 <?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $studentname = $_POST["first_name"];
 $studentlast_name = $_POST["last_name"];
 $classnum = $_POST["classnum"];
@@ -112,5 +113,6 @@ if ($correct) {
     echo '<p class="correct">ثبت نمره با موفقیت انجام شد</p>';
 } else {
     echo '<p class="error">ثبت نمره با خطا مواجه شد</p>';
+}
 }
 ?>

@@ -60,6 +60,7 @@ session_start();
 </html>
 <?php
 require_once "connection.php";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $first_name = $_POST["first_name"];
 $last_name = $_POST["last_name"];
 $password = $_POST["password"];
@@ -81,11 +82,9 @@ $newstudent->execute([
     "last_name" => "$last_name"
 ]);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   
+$_SESSION["first_name"] =$first_name;
+$_SESSION["last_name"] =$last_name;
     header("Location:studentmenu.php");
     exit();
 }
-$_SESSION["first_name"] =$first_name;
-$_SESSION["last_name"] =$last_name;
 ?>

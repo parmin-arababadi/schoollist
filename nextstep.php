@@ -8,10 +8,10 @@ $tlast_name = $_SESSION['tlast_name'];
 $lesson = $_SESSION['lesson'];
 $first_name = $_SESSION['first_name'];
 $last_name = $_SESSION['last_name'];
-$studentid=$pdo->prepare('select id from students where first_name=:first_name and last_name=:last_name');
-$studentid->execute([":first_name"=>"$sfirst_name",":last_name"=>"$slast_name"]);
-$studentsid=$studentid->fetch();
-$sid=$studentsid['id'];
+$studentid = $pdo->prepare('select id from students where first_name=:first_name and last_name=:last_name');
+$studentid->execute([":first_name" => "$sfirst_name", ":last_name" => "$slast_name"]);
+$studentsid = $studentid->fetch();
+$sid = $studentsid['id'];
 $teacherid = $pdo->prepare('select id from teachers where first_name=:tfirst_name and last_name=:tlast_name');
 $teacherid->execute([":tfirst_name" => "$tfirst_name", ":tlast_name" => "$tlast_name"]);
 $ids = $teacherid->fetch();
@@ -116,7 +116,8 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
             ?>
         </table>
         <form method="post" style="direction: rtl; margin-top:20px;">
-            <input type="text" name="classid" id="classid" class="form4" placeholder="شماره کلاس مورد نظر خود را وارد کنید">
+            <input type="text" name="classid" id="classid" class="form4"
+                placeholder="شماره کلاس مورد نظر خود را وارد کنید">
             <label for="classid"></label>
             <input type="submit" name="submit" id="submit" class="divc" value="ثبت">
             <label for="submit"></label>
@@ -150,7 +151,11 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
 
 </html>
 <?php
-$classid=$_POST['classid'];
-$newclass=$pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
-$newclass->execute([":student"=>"$sid",":class"=>"$classid"]);
+$classid = $_POST['classid'];
+$newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
+$newclass->execute([":student" => "$sid", ":class" => "$classid"]);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+header("location:studentmenu.php");
+exit;
+}
 ?>
