@@ -2,11 +2,13 @@
 session_start();
 require_once "connection.php";
 
-    $first_name = $_SESSION["first_name"];
-    $last_name = $_SESSION["last_name"];
-    $password = $_SESSION["password"];
+$user_type = $_SESSION["user_type"];
+$first_name = $_SESSION["first_name"];
+$last_name = $_SESSION["last_name"];
+$password = $_SESSION["password"];
+$nationalcode = $_SESSION["national_code"];
 
-if (!isset($_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'])) {
+if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'], $_SESSION['national_code']) || $_SESSION['user_type'] != 'student') {
     header("location:studentlogin.php");
     exit;
 }

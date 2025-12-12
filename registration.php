@@ -3,6 +3,7 @@ session_start();
 require_once "connection.php";
 $first_name = $_SESSION['first_name'];
 $last_name = $_SESSION['last_name'];
+$nationalcode = $_SESSION["national_code"];
 ?>
 <html>
 
@@ -46,7 +47,7 @@ $last_name = $_SESSION['last_name'];
     </div>
     <div class="box4">
         <form method="post">
-            <p class="title6">نام معلم</p>
+            <p class="title6" style="margin-top: 50px;">نام معلم</p>
             <input type="text" name="tfirst_name" id="tfirst_name" class="form6"
                 placeholder="نام معلم مورد نظرتان را وارد کنید">
             <label for="tfirst_name"></label>
@@ -57,13 +58,6 @@ $last_name = $_SESSION['last_name'];
             <p class="title6">نام درس</p>
             <input type="text" name="lesson" id="lesson" class="form6" placeholder="نام درس را وارد کنید">
             <label for="lesson"></label>
-            <p class="title6">نام</p>
-            <input type="text" name="sfirst_name" id="sfirst_name" class="form6" placeholder="نام خود را وارد کنید">
-            <label for="sfirst_name"></label>
-            <p class="title6">نام خانوادگی</p>
-            <input type="text" name="slast_name" id="slast_name" class="form6"
-                placeholder="نام خانوادگی خود را وارد کنید">
-            <label for="slast_name"></label>
             <input type="submit" name="submit" id="submit" class="divc" value=" ادامه" style="margin-bottom: 10px;">
             <label for="submit"></label>
         </form>
@@ -95,20 +89,18 @@ $last_name = $_SESSION['last_name'];
 
 </html>
 <?php
-$sfirst_name = $_POST['sfirst_name'];
-$slast_name = $_POST['slast_name'];
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
 $tfirst_name = $_POST['tfirst_name'];
 $tlast_name = $_POST['tlast_name'];
 $lesson = $_POST['lesson'];
-$_SESSION['sfirst_name'] = $sfirst_name;
-$_SESSION['slast_name'] = $slast_name;
+
 $_SESSION['tfirst_name'] = $tfirst_name;
 $_SESSION['tlast_name'] = $tlast_name;
 $_SESSION['lesson'] = $lesson;
-if ($sfirst_name == $first_name and $slast_name == $last_name) {
-    header('location:nextstep.php');
+
+ header("location:nextstep.php");
     exit;
-} else {
-    echo '<p class="error">اطلاعات خود را درست و کامل وارد کنید</p>';
+} else{
+echo '<p class="error"> روی گزینه ادامه کلیک کنید </p>';
 }
 ?>

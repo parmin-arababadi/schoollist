@@ -1,11 +1,12 @@
 <?php
 session_start();
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $user_type = $_SESSION["user_type"];
     $first_name = $_SESSION["first_name"];
     $last_name = $_SESSION["last_name"];
     $nationalcode = $_SESSION["nationalcode"];
-}
-if (!isset($_SESSION['first_name'], $_SESSION['nationalcode'], $_SESSION['last_name'])) {
+
+if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['nationalcode'], $_SESSION['last_name']) || $_SESSION['user_type']!='teacher') {
     header("location:teacherlogin.php");
     exit;
 }

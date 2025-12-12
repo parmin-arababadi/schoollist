@@ -50,6 +50,7 @@ session_start();
                 <input type="date" id="birth_date" name="birth_date" class="schoolform"
                     placeholder="تاریخ تولد خود را وارد کنید">
                 <label for="birth_date"></label>
+                <input type="hidden" name="user_type" value="student">
                 <input type="submit" id="submit" name="submit" class="submit2" value="ثبت نام">
                 <label for="submit"></label>
             </form>
@@ -61,30 +62,41 @@ session_start();
 <?php
 require_once "connection.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$first_name = $_POST["first_name"];
-$last_name = $_POST["last_name"];
-$password = $_POST["password"];
-$fathername = $_POST["fathername"];
-$nationalCode = $_POST["nationalCode"];
-$birth_date = $_POST["birth_date"];
-$hashedPassword= password_hash($password,PASSWORD_DEFAULT);
-if (empty($first_name)) {
-    echo '<p style="color:rgb(225, 89, 89); font-size: 13px;">خطا:نام کاربری را وارد کنید</p>';
-}
-$newstudent = $pdo->prepare('insert into students(first_name,last_name,password,father_name,national_code,birth_date)
-value(:first_name,:last_name,:password,:fathername,:nationalCode,:birth_date)');
-$newstudent->execute([
-    "first_name" => "$first_name",
-    "password" => "$hashedPassword",
-    "fathername" => "$fathername",
-    "nationalCode" => "$nationalCode",
-    "birth_date" => "$birth_date",
-    "last_name" => "$last_name"
-]);
+    $first_name = $_POST["first_name"];
+    $last_name = $_POST["last_name"];
+    $password = $_POST["password"];
+    $fathername = $_POST["fathername"];
+    $nationalCode = $_POST["nationalCode"];
+    $birth_date = $_POST["birth_date"];
+    $user_type = $_POST["user_type"];
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    if (strlen($password) < 8) {
+        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
+    }
+    if (strlen($nationalCode) !=10) {
+        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
+    }else{
 
-$_SESSION["first_name"] =$first_name;
-$_SESSION["last_name"] =$last_name;
-    header("Location:studentmenu.php");
-    exit();
+        if (empty($first_name)) {
+            echo '<p style="color:rgb(225, 89, 89); font-size: 18px;">خطا:نام کاربری را وارد کنید</p>';
+
+        }
+        $newstudent = $pdo->prepare('insert into students(first_name,last_name,password,father_name,national_code,birth_date)
+value(:first_name,:last_name,:password,:fathername,:nationalCode,:birth_date)');
+        $newstudent->execute([
+            "first_name" => "$first_name",
+            "password" => "$hashedPassword",
+            "fathername" => "$fathername",
+            "nationalCode" => "$nationalCode",
+            "birth_date" => "$birth_date",
+            "last_name" => "$last_name"
+        ]);
+
+        $_SESSION["user_type"] = $user_type;
+        $_SESSION["first_name"] = $first_name;
+        $_SESSION["last_name"] = $last_name;
+        header("Location:studentmenu.php");
+        exit();
+    }
 }
 ?>

@@ -27,7 +27,7 @@ session_start();
             <p class="title5">رمز عبور </p>
             <input type="text" id="password" name="password" class="form5" placeholder="رمز عبور خود را وارد کنید">
             <label for="password"></label>
-
+            <input type="hidden" name="user_type" value="student">
             <div class="forgetpassword">
 
                 <input type="radio" id="rememberme" name="rememberme" class="rememberme"
@@ -46,33 +46,38 @@ session_start();
 </html>
 <?php
 require_once("connection.php");
-if (isset($_POST["submit"])){
-$first_name = $_POST["first_name"];
-$last_name = $_POST["last_name"];
-$password = $_POST["password"];
+if ($_SERVER['REQUEST_METHOD']=="POST") {
+    $first_name = $_POST["first_name"];
+    $last_name = $_POST["last_name"];
+    $password = $_POST["password"];
+    $user_type = $_POST["user_type"];
+
+    $_SESSION["first_name"] = $first_name;
+    $_SESSION["last_name"] = $last_name;
+    $_SESSION["password"] = $password;
+    $_SESSION["user_type"] = $user_type;
+
+    $student = $pdo->prepare("select password from students where first_name=:first_name and last_name=:last_name");
+    $student->execute(["first_name" => "$first_name", "last_name" => "$last_name"]);
+    $result = $student->fetch();
 
 
-$_SESSION["first_name"] = $_POST["first_name"];
-$_SESSION["last_name"] = $_POST["last_name"];
-$_SESSION["password"] = $_POST["password"];
 
-$student = $pdo->prepare("select password from students where first_name=:first_name and last_name=:last_name");
-$student->execute(["first_name" => "$first_name", "last_name" => "$last_name"]);
-$result = $student->fetch();
-
-
-
-if (!empty($result)) {
-    $hashedPassword=$result['password'];
-    $x = password_verify($password, $hashedPassword);
-if ($x){
-    header("location:studentmenu.php");
-    exit;
-}else{
-    echo '<p class="error">رمز عبور اشتباه است</p>';
-}
-}else{
-    echo '<p class="error"> کاربری با این نام وجود ندارد </p>';
-}
+    if (!empty($result)) {
+        $hashedPassword = $result['password'];
+        $x = password_verify($password, $hashedPassword);
+        if ($x) {
+            $nationalcode = $pdo->prepare("select national_code from students where first_name=:first_name and last_name=:last_name");
+            $nationalcode->execute(["first_name" => "$first_name", "last_name" => "$last_name"]);
+            $code = $nationalcode->fetchColumn();
+            $_SESSION["national_code"] = $code;
+            header("location:studentmenu.php");
+            exit;
+        } else {
+            echo '<p class="error">رمز عبور اشتباه است</p>';
+        }
+    } else {
+        echo '<p class="error"> کاربری با این نام وجود ندارد </p>';
+    }
 }
 ?>

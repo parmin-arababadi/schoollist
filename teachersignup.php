@@ -45,6 +45,7 @@ session_start();
             <p class="teachertitle">تحصیلات</p>
             <input type="text" id="education" name="education" class="teacherform" placeholder="تحصیلات خود را بنویسید">
             <label for="education"></label>
+            <input type="hidden" name="user_type" value="teacher">
             <input type="submit" id="submit" name="submit" class="teachersubmit" value="ثبت نام">
             <label for="submit"></label>
         </form>
@@ -62,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $education = $_POST["education"];
     $phoneNumber = $_POST["phone_number"];
     $nationalCode = $_POST["nationalCode"];
+    $user_type = $_POST["user_type"];
 
     $_SESSION["first_name"] = $firstName;
     $_SESSION["last_name"] = $lastName;
@@ -70,7 +72,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["education"] = $education;
     $_SESSION["phone_number"] = $phoneNumber;
     $_SESSION["nationalCode"] = $nationalCode;
+    $_SESSION["user_type"] = $user_type;
 
+    if (strlen($nationalCode) !=10) {
+        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px;">خطا: کدملی اشتباه است  </p>';
+    }else{
     $newstudent = $pdo->prepare("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
 education,phone_number,membership_date) 
 valueS(:first_name,:last_name,:national_code,:father_name,:birth_date,:education,:phone_number,curdate())");
@@ -87,5 +93,5 @@ valueS(:first_name,:last_name,:national_code,:father_name,:birth_date,:education
     header("Location: mainmenu.php");
     exit();
 }
-
+}
 ?>

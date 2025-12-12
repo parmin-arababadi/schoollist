@@ -1,15 +1,14 @@
 <?php
 session_start();
 require_once 'connection.php';
-$sfirst_name = $_SESSION['sfirst_name'];
-$slast_name = $_SESSION['slast_name'];
+$nationalcode = $_SESSION["national_code"];
 $tfirst_name = $_SESSION['tfirst_name'];
 $tlast_name = $_SESSION['tlast_name'];
 $lesson = $_SESSION['lesson'];
 $first_name = $_SESSION['first_name'];
 $last_name = $_SESSION['last_name'];
-$studentid = $pdo->prepare('select id from students where first_name=:first_name and last_name=:last_name');
-$studentid->execute([":first_name" => "$sfirst_name", ":last_name" => "$slast_name"]);
+$studentid = $pdo->prepare('select id from students where national_code=:national_code');
+$studentid->execute([":national_code" => "$nationalcode"]);
 $studentsid = $studentid->fetch();
 $sid = $studentsid['id'];
 $teacherid = $pdo->prepare('select id from teachers where first_name=:tfirst_name and last_name=:tlast_name');
@@ -152,11 +151,17 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
 
 </html>
 <?php
-$classid = $_POST['classid'];
-$newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
-$newclass->execute([":student" => "$sid", ":class" => "$classid"]);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-header("location:studentmenu.php");
-exit;
+    $classid = $_POST['classid'];
+    foreach ($classes as $class) {
+        if ($class['id'] == $classid) {
+            $newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
+            $newclass->execute([":student" => "$sid", ":class" => "$classid"]);
+            header("location:studentmenu.php");
+            exit;
+        } else {
+            echo '<p class="error" style="height: 50px;"> از شماره کلاس های نمایش داده شده انتخاب کنید </p>';
+        }
+    }
 }
 ?>

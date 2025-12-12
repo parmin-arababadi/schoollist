@@ -3,9 +3,10 @@ session_start();
 require_once "connection.php";
 $first_name = $_SESSION["first_name"];
 $last_name = $_SESSION["last_name"];
+$nationalcode = $_SESSION["national_code"];
 
-$studentmark=$pdo->prepare("select teachers.first_name,mark,lesson from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on student_classes.class_id=classes.id join teachers on classes.teacher_id=teachers.id join lessons on classes.lesson_id=lessons.id join students on student_classes.student_id=students.id where students.first_name=:first_name and students.last_name=:last_name");
-$studentmark->execute([":first_name"=>"$first_name",":last_name"=>"$last_name"]);
+$studentmark=$pdo->prepare("select teachers.first_name,mark,lesson from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on student_classes.class_id=classes.id join teachers on classes.teacher_id=teachers.id join lessons on classes.lesson_id=lessons.id join students on student_classes.student_id=students.id where students.national_code=:national_code");
+$studentmark->execute([":national_code"=>"$nationalcode"]);
 $studentmarks=$studentmark->fetchAll(pdo::FETCH_ASSOC);
 
 ?>

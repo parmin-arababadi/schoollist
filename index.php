@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <html>
 
 <head>
@@ -51,7 +48,7 @@ session_start();
             </p>
             <p style="margin-top: 20px;">
                 <bold>همین امروز ثبت‌نام کنید و به جمع دانش‌آموزان موفق بپیوندید</bold>
-                <a href="studentsignup.php" class="sbmt" >ثبت‌نام</a>
+                <a href="studentsignup.php" class="sbmt">ثبت‌نام</a>
 
         </div>
 
@@ -63,11 +60,11 @@ session_start();
             <i class='fas fa-child'></i>
             ورود دانش آموز
         </a>
-        <a style="display: inline-block; margin-bottom: 10px;  margin-top: 30px;" href="teacherlogin.php">
+        <a style="margin-top: 30px;" href="teacherlogin.php">
             <i class='fa fa-male'></i>
             ورود معلم
         </a>
-        <a style="display: inline-block; margin-bottom: 10px;  margin-top: 30px;" href=".php">
+        <a style="margin-top: 30px;" href=".php">
             <i class='fas fa-angle-left'></i>
             درباره ما
         </a>
@@ -105,6 +102,7 @@ session_start();
                 </div>
             </div>
         </div>
+    </div>
 </body>
 
 </html>
