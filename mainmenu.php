@@ -6,7 +6,7 @@ session_start();
     $last_name = $_SESSION["last_name"];
     $nationalcode = $_SESSION["nationalcode"];
 
-if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['nationalcode'], $_SESSION['last_name']) || $_SESSION['user_type']!='teacher') {
+if (!isset($_SESSION['user_type'], $_COOKIE['first_name'], $_SESSION['nationalcode'], $_SESSION['last_name']) || $_SESSION['user_type']!='teacher') {
     header("location:teacherlogin.php");
     exit;
 }
@@ -54,7 +54,7 @@ if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['nationalc
 
 <body>
     <div class="head">
-        <h3>سلام <br><?php echo $_SESSION["first_name"]; ?> <br>عزیز! خوش امدید</h3>
+        <h3>سلام <br><?php echo $_COOKIE["first_name"]; ?> <br>عزیز! خوش امدید</h3>
     </div>
     <div class="mainheader">
 

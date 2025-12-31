@@ -1,8 +1,9 @@
 <?php
 session_start();
 require_once "connection.php";
-$first_name = $_SESSION["first_name"];
-$last_name = $_SESSION["last_name"];
+
+$first_name = $_COOKIE["first_name"];
+$last_name = $_COOKIE["last_name"];
 $sprofile = $pdo->prepare('select first_name,last_name,father_name,national_code,birth_date from students where first_name=:first_name and last_name=:last_name');
 $sprofile->execute([":first_name" => "$first_name", ":last_name" => "$last_name"]);
 $studentsprofile = $sprofile->fetchAll(pdo::FETCH_ASSOC);

@@ -52,8 +52,10 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
     $password = $_POST["password"];
     $user_type = $_POST["user_type"];
 
-    $_SESSION["first_name"] = $first_name;
-    $_SESSION["last_name"] = $last_name;
+    setcookie("first_name","$first_name",
+time()+3600,"/");
+setcookie("last_name","$last_name",
+time()+3600,"/");
     $_SESSION["password"] = $password;
     $_SESSION["user_type"] = $user_type;
 

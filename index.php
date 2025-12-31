@@ -64,9 +64,9 @@
             <i class='fa fa-male'></i>
             ورود معلم
         </a>
-        <a style="margin-top: 30px;" href=".php">
+        <a style="margin-top: 30px;" href="teachersignup.php">
             <i class='fas fa-angle-left'></i>
-            درباره ما
+             ثبت‌نام معلم
         </a>
         <a href="#contact" style=" margin-top: 30px;"><i class='fas fa-phone'></i>تماس با ما </a>
     </div>

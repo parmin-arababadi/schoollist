@@ -69,14 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nationalCode = $_POST["nationalCode"];
     $birth_date = $_POST["birth_date"];
     $user_type = $_POST["user_type"];
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
     if (strlen($password) < 8) {
         echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
     }
-    if (strlen($nationalCode) !=10) {
+    if (strlen($nationalCode) != 10) {
         echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
-    }else{
-
+    } else {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         if (empty($first_name)) {
             echo '<p style="color:rgb(225, 89, 89); font-size: 18px;">خطا:نام کاربری را وارد کنید</p>';
 

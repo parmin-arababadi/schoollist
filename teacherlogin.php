@@ -24,10 +24,9 @@ session_start();
             <input type="text" id="last_name" name="last_name" class="form5"
                 placeholder="نام خانوادگی خود را وارد کنید">
             <label for="last_name"></label>
-            <p class="title5">کد ملی </p>
-            <input type="text" id="nationalcode" name="nationalcode" class="form5"
-                placeholder="کد ملی خود را وارد کنید">
-            <label for="nationalcode"></label>
+            <p class="title5"> رمز عبور </p>
+            <input type="text" id="password" name="password" class="form5" placeholder=" رمز عبور خود را وارد کنید">
+            <label for="password"></label>
 
             <div class="forgetpassword">
 
@@ -48,23 +47,37 @@ session_start();
 </html>
 <?php
 require_once("connection.php");
-$_POST["first_name"];
-$_POST["last_name"];
-$_POST["nationalcode"];
-$_POST["user_type"];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $first_name = $_POST["first_name"];
+    $last_name = $_POST["last_name"];
+    $password = $_POST["password"];
+    $user_type = $_POST["user_type"];
 
-$_SESSION["user_type"] = $_POST["user_type"];
-$_SESSION["first_name"] = $_POST["first_name"];
-$_SESSION["last_name"] = $_POST["last_name"];
-$_SESSION["nationalcode"] = $_POST["nationalcode"];
+    setcookie("first_name","$first_name",
+time()+3600,"/");
+    $_SESSION["first_name"] = $first_name;
+    $_SESSION["last_name"] = $last_name;
+    $_SESSION["password"] = $password;
+    $_SESSION["user_type"] = $user_type;
 
-$teacher = $pdo->prepare('select * from teachers where first_name=:first_name AND last_name=:last_name AND national_code=:national_code');
-$teacher->execute(["first_name" => $_POST["first_name"], "last_name" => $_POST["last_name"], "national_code" => $_POST["nationalcode"]]);
-$x = $teacher->fetchAll();
-if ($x) {
-    header("location:mainmenu.php");
-    exit;
-} else {
-    echo '<p style="color:red;">کاربری با این نام وجود ندارد</p>';
+    $teacher = $pdo->prepare("select password from teachers where first_name=:first_name and last_name=:last_name");
+    $teacher->execute(["first_name" => "$first_name", "last_name" => "$last_name"]);
+    $result = $teacher->fetch();
+
+
+
+    if (!empty($result)) {
+        $hashedPassword = $result['password'];
+        $x = password_verify($password, $hashedPassword);
+
+        if ($x) {
+           header("location:mainmenu.php");
+           exit;
+        } else {
+            echo '<p style="color:red;"> رمز عبور نادرست است  </p>';
+        }
+    }else{
+        echo '<p style="color:red;">کاربری با این نام وجود ندارد</p>';
+    }
 }
 ?>

@@ -1,14 +1,13 @@
 <?php
 session_start();
 require_once "connection.php";
-
 $user_type = $_SESSION["user_type"];
-$first_name = $_SESSION["first_name"];
-$last_name = $_SESSION["last_name"];
+$first_name = $_COOKIE["first_name"];
+$last_name = $_COOKIE["last_name"];
 $password = $_SESSION["password"];
 $nationalcode = $_SESSION["national_code"];
 
-if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['password'], $_SESSION['last_name'], $_SESSION['national_code']) || $_SESSION['user_type'] != 'student') {
+if (!isset($_SESSION['user_type'], $_COOKIE['first_name'], $_SESSION['password'], $_COOKIE['last_name'], $_SESSION['national_code']) || $_SESSION['user_type'] != 'student') {
     header("location:studentlogin.php");
     exit;
 }
@@ -45,7 +44,7 @@ if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['password'
 <body>
     <header>
         <div class="head">
-            <h3>سلام <br><?php echo $first_name; ?> <br>عزیز! خوش آمدی</h3>
+            <h3>سلام <br><?php echo $_COOKIE['first_name'] ?> <br>عزیز! خوش آمدی</h3>
         </div>
         <div class="mainheader">
 
