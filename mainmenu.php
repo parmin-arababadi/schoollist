@@ -1,12 +1,10 @@
 <?php
 session_start();
-
-    $user_type = $_SESSION["user_type"];
-    $first_name = $_SESSION["first_name"];
-    $last_name = $_SESSION["last_name"];
-    $nationalcode = $_SESSION["nationalcode"];
-
-if (!isset($_SESSION['user_type'], $_COOKIE['first_name'], $_SESSION['nationalcode'], $_SESSION['last_name']) || $_SESSION['user_type']!='teacher') {
+$first_name = $_COOKIE["first_name"];
+$password = $_SESSION["password"];
+$user_type = $_SESSION["user_type"];
+$nationalcode = $_SESSION["nationalcode"];
+if(!isset($first_name,$password,$user_type,$nationalcode) || $user_type!='teacher'){
     header("location:teacherlogin.php");
     exit;
 }

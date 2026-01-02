@@ -3,7 +3,7 @@ session_start();
 require_once "connection.php";
 $first_name = $_COOKIE['first_name'];
 $last_name = $_COOKIE['last_name'];
-$nationalcode = $_SESSION["national_code"];
+$nationalcode = $_SESSION["nationalcode"];
 ?>
 <html>
 
@@ -89,18 +89,33 @@ $nationalcode = $_SESSION["national_code"];
 
 </html>
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-$tfirst_name = $_POST['tfirst_name'];
-$tlast_name = $_POST['tlast_name'];
-$lesson = $_POST['lesson'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tfirst_name = $_POST['tfirst_name'];
+    $tlast_name = $_POST['tlast_name'];
+    $lesson = $_POST['lesson'];
 
-$_SESSION['tfirst_name'] = $tfirst_name;
-$_SESSION['tlast_name'] = $tlast_name;
-$_SESSION['lesson'] = $lesson;
+    setcookie(
+        "tfirst_name",
+        "$tfirst_name",
+        time() + 3600,
+        "/"
+    );
+    setcookie(
+        "tlast_name",
+        "$tlast_name",
+        time() + 3600,
+        "/"
+    );
+    setcookie(
+        "lesson",
+        "$lesson",
+        time() + 3600,
+        "/"
+    );
 
- header("location:nextstep.php");
+    header("location:nextstep.php");
     exit;
-} else{
-echo '<p class="error"> روی گزینه ادامه کلیک کنید </p>';
+} else {
+    echo '<p class="error"> روی گزینه ادامه کلیک کنید </p>';
 }
 ?>

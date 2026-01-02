@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once "connection.php";
-$first_name = $_SESSION["first_name"];
-$last_name = $_SESSION["last_name"];
-$nationalcode = $_SESSION["national_code"];
+$first_name = $_COOKIE["first_name"];
+$last_name = $_COOKIE["last_name"];
+$nationalcode = $_SESSION["nationalcode"];
 $studentclass = $pdo->prepare("SELECT teachers.first_name,teachers.last_name,lesson,week_day.title,class_start,class_end FROM classes join lessons on lessons.id=classes.lesson_id join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day join student_classes on class_id=classes.id join students on students.id=student_id where students.national_code=:national_code
 ");
 $studentclass->execute(["national_code" => "$nationalcode"]);

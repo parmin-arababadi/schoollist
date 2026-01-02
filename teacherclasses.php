@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once("connection.php");
-$firstName = $_SESSION["first_name"];
-$lastName = $_SESSION["last_name"];
+$firstName = $_COOKIE["first_name"];
+$lastName = $_COOKIE["last_name"];
 $nationalCode = $_SESSION["nationalcode"];
 $teachers = $pdo->prepare("SELECT class_start,title,class_end FROM classes join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day where teachers.first_name=:firstname and teachers.last_name=:lastname
  and teachers.national_code=:nationalcode");

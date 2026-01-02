@@ -1,10 +1,10 @@
 <?php
 session_start();
 require_once 'connection.php';
-$nationalcode = $_SESSION["national_code"];
-$tfirst_name = $_SESSION['tfirst_name'];
-$tlast_name = $_SESSION['tlast_name'];
-$lesson = $_SESSION['lesson'];
+$nationalcode = $_SESSION["nationalcode"];
+$tfirst_name = $_COOKIE['tfirst_name'];
+$tlast_name = $_COOKIE['tlast_name'];
+$lesson = $_COOKIE['lesson'];
 $first_name = $_COOKIE['first_name'];
 $last_name = $_COOKIE['last_name'];
 $studentid = $pdo->prepare('select id from students where national_code=:national_code');

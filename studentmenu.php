@@ -5,12 +5,9 @@ $user_type = $_SESSION["user_type"];
 $first_name = $_COOKIE["first_name"];
 $last_name = $_COOKIE["last_name"];
 $password = $_SESSION["password"];
-$nationalcode = $_SESSION["national_code"];
+$nationalcode = $_SESSION["nationalcode"];
 
-if (!isset($_SESSION['user_type'], $_COOKIE['first_name'], $_SESSION['password'], $_COOKIE['last_name'], $_SESSION['national_code']) || $_SESSION['user_type'] != 'student') {
-    header("location:studentlogin.php");
-    exit;
-}
+
 ?>
 <html>
 

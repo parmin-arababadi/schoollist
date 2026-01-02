@@ -20,12 +20,12 @@ session_start();
         <form method="post">
             <input type="text" id="first_name" name="first_name" class="form4" placeholder="نام خود را وارد کنید">
             <label for="first_name"></label>
-            <p class="title5">نام خانوادگی</p>
-            <input type="text" id="last_name" name="last_name" class="form5"
-                placeholder="نام خانوادگی خود را وارد کنید">
-            <label for="last_name"></label>
+            <p class="title5"> کد ملی</p>
+            <input type="text" id="nationalcode" name="nationalcode" class="form5"
+                placeholder="کد ملی خود را وارد کنید">
+            <label for="nationalcode"></label>
             <p class="title5">رمز عبور </p>
-            <input type="text" id="password" name="password" class="form5" placeholder="رمز عبور خود را وارد کنید">
+            <input type="password" id="password" name="password" class="form5" placeholder="رمز عبور خود را وارد کنید">
             <label for="password"></label>
             <input type="hidden" name="user_type" value="student">
             <div class="forgetpassword">
@@ -46,33 +46,40 @@ session_start();
 </html>
 <?php
 require_once("connection.php");
-if ($_SERVER['REQUEST_METHOD']=="POST") {
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $first_name = $_POST["first_name"];
-    $last_name = $_POST["last_name"];
+    $nationalcode = $_POST["nationalcode"];
     $password = $_POST["password"];
     $user_type = $_POST["user_type"];
 
-    setcookie("first_name","$first_name",
-time()+3600,"/");
-setcookie("last_name","$last_name",
-time()+3600,"/");
-    $_SESSION["password"] = $password;
-    $_SESSION["user_type"] = $user_type;
 
-    $student = $pdo->prepare("select password from students where first_name=:first_name and last_name=:last_name");
-    $student->execute(["first_name" => "$first_name", "last_name" => "$last_name"]);
+    $student = $pdo->prepare("select * from students where first_name=:first_name and national_code=:nationalcode");
+    $student->execute(["first_name" => "$first_name", "nationalcode" => "$nationalcode"]);
     $result = $student->fetch();
 
 
 
     if (!empty($result)) {
         $hashedPassword = $result['password'];
+        $last_name = $result['last_name'];
         $x = password_verify($password, $hashedPassword);
         if ($x) {
-            $nationalcode = $pdo->prepare("select national_code from students where first_name=:first_name and last_name=:last_name");
-            $nationalcode->execute(["first_name" => "$first_name", "last_name" => "$last_name"]);
-            $code = $nationalcode->fetchColumn();
-            $_SESSION["national_code"] = $code;
+
+            setcookie(
+                "first_name",
+                "$first_name",
+                time() + 3600,
+                "/"
+            );
+            setcookie(
+                "last_name",
+                "$last_name",
+                time() + 3600,
+                "/"
+            );
+            $_SESSION["password"] = $password;
+            $_SESSION["user_type"] = $user_type;
+            $_SESSION["nationalcode"] = $nationalcode;
             header("location:studentmenu.php");
             exit;
         } else {
