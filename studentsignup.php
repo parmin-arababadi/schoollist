@@ -93,8 +93,29 @@ value(:first_name,:last_name,:password,:fathername,:nationalCode,:birth_date)');
         ]);
 
         $_SESSION["user_type"] = $user_type;
-        $_SESSION["first_name"] = $first_name;
-        $_SESSION["last_name"] = $last_name;
+        setcookie(
+            "first_name",
+            "$first_name",
+            time() + 3600,
+            "/"
+        );
+        setcookie(
+            "last_name",
+            "$last_name",
+            time() + 3600,
+            "/"
+        );
+        setcookie(
+            "father_name",
+            "$fathername",
+            time() + 3600,
+            "/"
+        );
+        $_SESSION["birth_date"] = $birthDate;
+        $_SESSION["phone_number"] = $phoneNumber;
+        $_SESSION["nationalCode"] = $nationalCode;
+        $_SESSION["user_type"] = $user_type;
+        $_SESSION["password"] = $hashedPassword;
         header("Location:studentmenu.php");
         exit();
     }

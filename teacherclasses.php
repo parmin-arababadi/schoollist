@@ -97,7 +97,7 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
 
 
     </table>
-     <div style=" background-color: rgb(2, 2, 164);
+        <div style=" background-color: rgb(2, 2, 164);
     text-align: right;
     direction: rtl;
     width: cover;
@@ -113,6 +113,13 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
             <i class='fas fa-phone'></i>
             09916936013
         </a>
+
+        <div style="text-align: right; direction: rtl; justify-content: right; ">
+            <h3><i class='far fa-newspaper'></i>اخبار مدرسه</h3>
+            <p>فردا 10 شهریور کلاس ها با یک ساعت تاخیر شروع میشود</p>
+            <p>فردا کلاس ریاضی ساعت 10 شروع میشود</p>
+        </div>
+    </div>
 </body>
 
 </html>

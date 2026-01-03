@@ -63,48 +63,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (strlen($_POST["password"]) < 8) {
         echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
-    }else{
-    if (strlen($_POST["nationalCode"]) != 10) {
-        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px;">خطا: کدملی اشتباه است  </p>';
     } else {
-        $firstName = $_POST["first_name"];
-        $lastName = $_POST["last_name"];
-        $fatherName = $_POST["father_name"];
-        $birthDate = $_POST["birth_date"];
-        $education = $_POST["education"];
-        $phoneNumber = $_POST["phone_number"];
-        $nationalCode = $_POST["nationalCode"];
-        $user_type = $_POST["user_type"];
-        $password = $_POST["password"];
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        if (strlen($_POST["nationalCode"]) != 10) {
+            echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px;">خطا: کدملی اشتباه است  </p>';
+        } else {
+            $firstName = $_POST["first_name"];
+            $lastName = $_POST["last_name"];
+            $fatherName = $_POST["father_name"];
+            $birthDate = $_POST["birth_date"];
+            $education = $_POST["education"];
+            $phoneNumber = $_POST["phone_number"];
+            $nationalCode = $_POST["nationalCode"];
+            $user_type = $_POST["user_type"];
+            $password = $_POST["password"];
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
-        $newstudent = $pdo->prepare("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
+            $newstudent = $pdo->prepare("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
 education,phone_number,membership_date,password) 
 VALUES(:first_name,:last_name,:national_code,:father_name,:birth_date,:education,:phone_number,curdate(),:password)");
-        $newstudent->execute([
-            ":first_name" => "$firstName",
-            ":last_name" => "$lastName",
-            ":national_code" => "$nationalCode",
-            ":father_name" => "$fatherName",
-            ":phone_number" => "$phoneNumber",
-            ":education" => "$education",
-            ":birth_date" => "$birthDate",
-            ":password" => "$hashedPassword"
-        ]);
-        $_SESSION["first_name"] = $firstName;
-        $_SESSION["last_name"] = $lastName;
-        $_SESSION["father_name"] = $fatherName;
-        $_SESSION["birth_date"] = $birthDate;
-        $_SESSION["education"] = $education;
-        $_SESSION["phone_number"] = $phoneNumber;
-        $_SESSION["nationalCode"] = $nationalCode;
-        $_SESSION["user_type"] = $user_type;
-        $_SESSION["password"] = $hashedPassword;
+            $newstudent->execute([
+                ":first_name" => "$firstName",
+                ":last_name" => "$lastName",
+                ":national_code" => "$nationalCode",
+                ":father_name" => "$fatherName",
+                ":phone_number" => "$phoneNumber",
+                ":education" => "$education",
+                ":birth_date" => "$birthDate",
+                ":password" => "$hashedPassword"
+            ]);
+            setcookie(
+                "first_name",
+                "$firstName",
+                time() + 3600,
+                "/"
+            );
+            setcookie(
+                "last_name",
+                "$lastName",
+                time() + 3600,
+                "/"
+            );
+            setcookie(
+                "education",
+                "$education",
+                time() + 3600,
+                "/"
+            );
+            setcookie(
+                "father_name",
+                "$fatherName",
+                time() + 3600,
+                "/"
+            );
+            $_SESSION["birth_date"] = $birthDate;
+            $_SESSION["phone_number"] = $phoneNumber;
+            $_SESSION["nationalCode"] = $nationalCode;
+            $_SESSION["user_type"] = $user_type;
+            $_SESSION["password"] = $hashedPassword;
 
-        header("Location: mainmenu.php");
-        exit();
+            header("Location: mainmenu.php");
+            exit();
+        }
     }
-}
 }
 ?>
