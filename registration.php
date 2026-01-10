@@ -1,9 +1,31 @@
 <?php
 session_start();
 require_once "connection.php";
-$first_name = $_COOKIE['first_name'];
-$last_name = $_COOKIE['last_name'];
-$nationalcode = $_SESSION["nationalcode"];
+require_once "sprofile.php";
+require_once "svalidation.php";
+$teachers = $pdo->prepare("select id,first_name,last_name from teachers");
+$teachers->execute();
+$teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
+
+$lessons = $pdo->prepare("select id,lesson from lessons");
+$lessons->execute();
+$lessons = $lessons->fetchAll(PDO::FETCH_ASSOC);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $teacherid = $_POST['teacherid'];
+    $lessonid = $_POST['lessonid'];
+    $check = $pdo->prepare("select id from classes where lesson_id=:lessonid and teacher_id=:teacherid");
+    $check->execute([":teacherid" => "$teacherid", ":lessonid" => "$lessonid"]);
+    $check = $check->fetch();
+    if (!empty($check)) {
+        $_SESSION['classid'] = $check['id'];
+        $_SESSION['teacherid'] = $teacherid;
+        $_SESSION['lessonid'] = $lessonid;
+        header('location:nextstep.php');
+        exit;
+    } else {
+echo '<p class="error2">معلم مورد نظر شما این درس را تدریس نمیکند</p>';
+    }
+}
 ?>
 <html>
 
@@ -45,24 +67,58 @@ $nationalcode = $_SESSION["nationalcode"];
 
         <a href="#contact"><i class='fas fa-phone'></i>تماس با ما </a>
     </div>
-    <div class="box4">
+    <div class="teacher">
+        <table>
+            <tr>
+                <th>نام خانوادگی </th>
+                <th>نام معلم</th>
+                <th>ایدی معلم</th>
+            </tr>
+            <?php
+            if (!empty($teachers)) {
+                foreach ($teachers as $teacher) {
+                    echo '<tr>';
+                    echo "<td>" . $teacher['last_name'] . "</td>";
+                    echo "<td>" . $teacher['first_name'] . "</td>";
+                    echo "<td>" . $teacher['id'] . "</td>";
+                    echo '</tr>';
+                }
+            }
+            ?>
+        </table>
+    </div>
+
+    <div class="lesson">
+        <table>
+            <tr>
+                <th>نام درس</th>
+                <th></th>
+                <th>شماره درس</th>
+            </tr>
+            <?php
+            if (!empty($lessons)) {
+                foreach ($lessons as $lesson) {
+                    echo '<tr>';
+                    echo '<td>' . $lesson['lesson'] . '<td>';
+                    echo '<td>' . $lesson['id'] . '<td>';
+                    echo '</tr>';
+                }
+            }
+            ?>
+
+        </table>
         <form method="post">
-            <p class="title6" style="margin-top: 50px;">نام معلم</p>
-            <input type="text" name="tfirst_name" id="tfirst_name" class="form6"
-                placeholder="نام معلم مورد نظرتان را وارد کنید">
-            <label for="tfirst_name"></label>
-            <p class="title6">نام خانوادگی معلم</p>
-            <input type="text" name="tlast_name" id="tlast_name" class="form6"
-                placeholder="نام خانوادگی معلم مورد نظر را وارد کنید">
-            <label for="tlast_name"></label>
-            <p class="title6">نام درس</p>
-            <input type="text" name="lesson" id="lesson" class="form6" placeholder="نام درس را وارد کنید">
-            <label for="lesson"></label>
-            <input type="submit" name="submit" id="submit" class="divc" value=" ادامه" style="margin-bottom: 10px;">
+            <input type="number" name="teacherid" id="teacherid" class="input"
+                placeholder="ایدی معلم مورد نظر را وارد کنید">
+            <label for="teacherid"></label>
+            <input type="number" name="lessonid" id="lessonid" class="input"
+                placeholder="شماره کلاس مورد نظر رو وارد کنید">
+            <label for="lessonid"></label>
+            <input type="submit" name="submit" id="submit" class="continue" value="ادامه">
             <label for="submit"></label>
         </form>
     </div>
-    <div style=" background-color: rgb(2, 2, 164);
+    <div style="background-color: rgb(2, 2, 164);
     text-align: right;
     direction: rtl;
     width: cover;
@@ -88,34 +144,3 @@ $nationalcode = $_SESSION["nationalcode"];
 </body>
 
 </html>
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tfirst_name = $_POST['tfirst_name'];
-    $tlast_name = $_POST['tlast_name'];
-    $lesson = $_POST['lesson'];
-
-    setcookie(
-        "tfirst_name",
-        "$tfirst_name",
-        time() + 3600,
-        "/"
-    );
-    setcookie(
-        "tlast_name",
-        "$tlast_name",
-        time() + 3600,
-        "/"
-    );
-    setcookie(
-        "lesson",
-        "$lesson",
-        time() + 3600,
-        "/"
-    );
-
-    header("location:nextstep.php");
-    exit;
-} else {
-    echo '<p class="error"> روی گزینه ادامه کلیک کنید </p>';
-}
-?>

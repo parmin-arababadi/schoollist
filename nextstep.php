@@ -1,22 +1,13 @@
 <?php
 session_start();
 require_once 'connection.php';
-$nationalcode = $_SESSION["nationalcode"];
-$tfirst_name = $_COOKIE['tfirst_name'];
-$tlast_name = $_COOKIE['tlast_name'];
-$lesson = $_COOKIE['lesson'];
-$first_name = $_COOKIE['first_name'];
-$last_name = $_COOKIE['last_name'];
-$studentid = $pdo->prepare('select id from students where national_code=:national_code');
-$studentid->execute([":national_code" => "$nationalcode"]);
-$studentsid = $studentid->fetch();
-$sid = $studentsid['id'];
-$teacherid = $pdo->prepare('select id from teachers where first_name=:tfirst_name and last_name=:tlast_name');
-$teacherid->execute([":tfirst_name" => "$tfirst_name", ":tlast_name" => "$tlast_name"]);
-$ids = $teacherid->fetch();
-$id = $ids['id'];
-$c = $pdo->prepare('select lesson,title,classes.id,class_start,class_end from classes join teachers on teachers.id=classes.teacher_id join lessons on lessons.id=classes.lesson_id join week_day on week_day.id=classes.class_day where teachers.id=:id');
-$c->execute([":id" => "$id"]);
+require_once "sprofile.php";
+require_once "svalidation.php";
+$class_id = $_SESSION['classid'];
+$teacherid = $_SESSION['teacherid'];
+$lessonid = $_SESSION['lessonid'];
+$c = $pdo->prepare('select teachers.first_name,lesson,title,classes.id,class_start,class_end from classes join teachers on teachers.id=classes.teacher_id join lessons on lessons.id=classes.lesson_id join week_day on week_day.id=classes.class_day where teachers.id=:teacherid');
+$c->execute([":teacherid" => "$teacherid"]);
 $classes = $c->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <html>
@@ -97,6 +88,7 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
                 <th>ساعت شروع </th>
                 <th>روز کلاس</th>
                 <th>نام درس</th>
+                <th>نام معلم</th>
                 <th>شماره کلاس</th>
             </tr>
             <?php
@@ -107,6 +99,7 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
                     echo "<td>" . $class['class_start'] . "</td>";
                     echo "<td>" . $class['title'] . "</td>";
                     echo "<td>" . $class['lesson'] . "</td>";
+                    echo "<td>" . $class['first_name'] . "</td>";
                     echo "<td>" . $class['id'] . "</td>";
                 }
             } else {
@@ -116,7 +109,7 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
             ?>
         </table>
         <form method="post" style="direction: rtl; margin-top:20px;">
-            <input type="text" name="classid" id="classid" class="form4"
+            <input type="number" name="classid" id="classid" class="form4"
                 placeholder="شماره کلاس مورد نظر خود را وارد کنید">
             <label for="classid"></label>
             <input type="submit" name="submit" id="submit" class="divc" value="ثبت">
@@ -156,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($classes as $class) {
         if ($class['id'] == $classid) {
             $newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
-            $newclass->execute([":student" => "$sid", ":class" => "$classid"]);
+            $newclass->execute([":student" => "$studentid", ":class" => "$classid"]);
             header("location:studentmenu.php");
             exit;
         } else {

@@ -2,36 +2,32 @@
 session_start();
 require_once("connection.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $first_name = $_POST["first_name"];
     $nationalcode = $_POST["nationalcode"];
     $password = $_POST["password"];
     $user_type = $_POST["user_type"];
 
-    $teacher = $pdo->prepare("select password,last_name from teachers where first_name=:first_name and national_code=:nationalcode");
-    $teacher->execute([":first_name" => "$first_name", ":nationalcode" => "$nationalcode"]);
+    $teacher = $pdo->prepare("select password,last_name,first_name,id from teachers where national_code=:nationalcode");
+    $teacher->execute([":nationalcode" => "$nationalcode"]);
     $result = $teacher->fetch();
 
     if (!empty($result)) {
         $hashedPassword = $result['password'];
         $last_name = $result['last_name'];
+        $first_name = $result['first_name'];
+        $teacherid = $result['id'];
+        var_dump($first_name);
         $x = password_verify($password, $hashedPassword);
         if ($x) {
             setcookie(
-                "first_name",
-                "$first_name",
-                time() + 3600,
-                "/"
+             "first_name",
+             $first_name,
+             time()+3600,
+             "/"
             );
+            $_SESSION["id"] = $teacherid;
             $_SESSION["nationalcode"] = $nationalcode;
-            $_SESSION["password"] = $password;
             $_SESSION["user_type"] = $user_type;
-            setcookie(
-                "last_name",
-                "$last_name",
-                time() + 3600,
-                "/"
-            );
-            header("location:mainmenu.php");
+            header("location:teachermenu.php");
             exit;
         } else {
             echo '<p class="error">رمز عبور اشتباه است</p>';
@@ -56,10 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="box2">
-        <p class="title5">نام</p>
         <form method="post">
-            <input type="text" id="first_name" name="first_name" class="form4" placeholder="نام خود را وارد کنید">
-            <label for="first_name"></label>
             <p class="title5"> کد ملی</p>
             <input type="text" id="nationalcode" name="nationalcode" class="form5"
                 placeholder="کد ملی خود را وارد کنید">

@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $birthDate = $_POST["birth_date"];
             $education = $_POST["education"];
             $phoneNumber = $_POST["phone_number"];
-            $nationalCode = $_POST["nationalCode"];
+            $national_code = $_POST["nationalCode"];
             $user_type = $_POST["user_type"];
             $password = $_POST["password"];
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -92,37 +92,23 @@ VALUES(:first_name,:last_name,:national_code,:father_name,:birth_date,:education
                 ":birth_date" => "$birthDate",
                 ":password" => "$hashedPassword"
             ]);
+            $id = $pdo->prepare("select id from teachers where national_code=:national_code");
+            $id->execute([":national_code" => "$national_code"]);
+            $id = $id->fetch();
+            $teacherid = $id['id'];
             setcookie(
                 "first_name",
                 "$firstName",
                 time() + 3600,
                 "/"
             );
-            setcookie(
-                "last_name",
-                "$lastName",
-                time() + 3600,
-                "/"
-            );
-            setcookie(
-                "education",
-                "$education",
-                time() + 3600,
-                "/"
-            );
-            setcookie(
-                "father_name",
-                "$fatherName",
-                time() + 3600,
-                "/"
-            );
-            $_SESSION["birth_date"] = $birthDate;
+            $_SESSION["teacherid"] = $teacherid;
             $_SESSION["phone_number"] = $phoneNumber;
             $_SESSION["nationalCode"] = $nationalCode;
             $_SESSION["user_type"] = $user_type;
             $_SESSION["password"] = $hashedPassword;
 
-            header("Location: mainmenu.php");
+            header("Location: teachermenu.php");
             exit();
         }
     }

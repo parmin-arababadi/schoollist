@@ -16,10 +16,8 @@ session_start();
 
 <body>
     <div class="box2">
-        <p class="title5">نام</p>
+       
         <form method="post">
-            <input type="text" id="first_name" name="first_name" class="form4" placeholder="نام خود را وارد کنید">
-            <label for="first_name"></label>
             <p class="title5"> کد ملی</p>
             <input type="text" id="nationalcode" name="nationalcode" class="form5"
                 placeholder="کد ملی خود را وارد کنید">
@@ -47,14 +45,13 @@ session_start();
 <?php
 require_once("connection.php");
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $first_name = $_POST["first_name"];
     $nationalcode = $_POST["nationalcode"];
-    $password = $_POST["password"];
+    $password = $_POST["password"]??' ';
     $user_type = $_POST["user_type"];
 
 
-    $student = $pdo->prepare("select * from students where first_name=:first_name and national_code=:nationalcode");
-    $student->execute(["first_name" => "$first_name", "nationalcode" => "$nationalcode"]);
+    $student = $pdo->prepare("select * from students where national_code=:nationalcode");
+    $student->execute([ "nationalcode" => "$nationalcode"]);
     $result = $student->fetch();
 
 
@@ -62,6 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (!empty($result)) {
         $hashedPassword = $result['password'];
         $last_name = $result['last_name'];
+        $studentid=$result['id'];
+        $first_name=$result['first_name'];
         $x = password_verify($password, $hashedPassword);
         if ($x) {
 
@@ -77,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 time() + 3600,
                 "/"
             );
-            $_SESSION["password"] = $password;
+            $_SESSION["id"] = $studentid;
             $_SESSION["user_type"] = $user_type;
             $_SESSION["nationalcode"] = $nationalcode;
             header("location:studentmenu.php");

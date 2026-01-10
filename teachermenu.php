@@ -1,13 +1,7 @@
 <?php
 session_start();
-$first_name = $_COOKIE["first_name"];
-$password = $_SESSION["password"];
-$user_type = $_SESSION["user_type"];
-$nationalcode = $_SESSION["nationalcode"];
-if(!isset($first_name,$password,$user_type,$nationalcode) || $user_type!='teacher'){
-    header("location:teacherlogin.php");
-    exit;
-}
+require_once ("teacherprofile.php");
+require_once ("tvalidation.php");
 ?>
 
 <html>
@@ -70,7 +64,7 @@ if(!isset($first_name,$password,$user_type,$nationalcode) || $user_type!='teache
             </a>
         </div>
         <div id="marks">
-            <a href="marklist.php">
+            <a href="tmarklist.php">
                 <img src="School-Marks.jpg">
                 <div style="color: black; margin-top: 10px"> نمرات دانش آموزان من</div>
             </a>

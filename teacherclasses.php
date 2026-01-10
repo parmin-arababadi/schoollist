@@ -1,27 +1,25 @@
 <?php
 session_start();
 require_once("connection.php");
-$firstName = $_COOKIE["first_name"];
-$lastName = $_COOKIE["last_name"];
-$nationalCode = $_SESSION["nationalcode"];
-$teachers = $pdo->prepare("SELECT class_start,title,class_end FROM classes join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day where teachers.first_name=:firstname and teachers.last_name=:lastname
- and teachers.national_code=:nationalcode");
-$teachers->execute(["firstname" => "$firstName", "lastname" => "$lastName", "nationalcode" => "$nationalCode"]);
+require_once ("teacherprofile.php");
+require_once("tvalidation.php");
+$teachers = $pdo->prepare("SELECT class_start,title,class_end FROM classes join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day where 
+ teachers.id=:id");
+$teachers->execute(["id" => "$teacherid"]);
 $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 <html>
 
 <head>
     <link rel="stylesheet" href="CSS/style.css">
-     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
-     body{
-        font-family: 'Vazirmatn',sans-serif;
-     }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+        }
 
-     table {
+        table {
             border: black 1px solid;
             width: 700px;
             height: 270px;
@@ -31,7 +29,7 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
             border-bottom: black 1px solid;
             padding-right: 10px;
             border-right: black 1px solid;
-        } 
+        }
 
         td {
             border-bottom: black 1px solid;
@@ -61,7 +59,8 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
             vertical-align: middle;
             margin-left: 5px;
         }
-        html{
+
+        html {
             scroll-behavior: smooth;
         }
     </style>
@@ -72,7 +71,7 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
 
         <a href="mainmenu.php"><i class='fas fa-bars'></i> منو اصلی</a>
         <a href="teacherclasses.php"><i class='fas fa-school'></i>کلاس های من</a>
-        <a href="marklist.php"><i class='fas fa-book'></i>نمرات دانش آموزان من</a>
+        <a href="tmarklist.php"><i class='fas fa-book'></i>نمرات دانش آموزان من</a>
 
         <a href="#contact"><i class='fas fa-phone'></i>تماس با ما </a>
     </div>
@@ -97,7 +96,7 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
 
 
     </table>
-        <div style=" background-color: rgb(2, 2, 164);
+    <div style=" background-color: rgb(2, 2, 164);
     text-align: right;
     direction: rtl;
     width: cover;

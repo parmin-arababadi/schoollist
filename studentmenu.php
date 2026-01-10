@@ -1,13 +1,8 @@
 <?php
 session_start();
 require_once "connection.php";
-$user_type = $_SESSION["user_type"];
-$first_name = $_COOKIE["first_name"];
-$last_name = $_COOKIE["last_name"];
-$password = $_SESSION["password"];
-$nationalcode = $_SESSION["nationalcode"];
-
-
+require_once "sprofile.php";
+require_once "svalidation.php";
 ?>
 <html>
 
@@ -67,7 +62,7 @@ $nationalcode = $_SESSION["nationalcode"];
     border-radius: 20px; margin-right:15px; margin-top: 50px; margin-left: 0px;" src="newclass.png">
                 <div style="margin-top: 10px; color:black;"> ثبت نام</div>
             </a>
-            <a href="profile.php">
+            <a href="studentprofile.php">
                 <img style="    width: 150px;
     height: 150px;
     border-radius: 20px;  margin-top: 50px;" src="studenticon.jpg">

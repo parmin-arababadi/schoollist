@@ -2,10 +2,10 @@
 session_start();
 require_once "connection.php";
 
-$first_name = $_COOKIE["first_name"];
-$last_name = $_COOKIE["last_name"];
-$sprofile = $pdo->prepare('select first_name,last_name,father_name,national_code,birth_date from students where first_name=:first_name and last_name=:last_name');
-$sprofile->execute([":first_name" => "$first_name", ":last_name" => "$last_name"]);
+require_once "sprofile.php";
+require_once "svalidation.php";
+$sprofile = $pdo->prepare('select first_name,last_name,father_name,national_code,birth_date from students where id=:id');
+$sprofile->execute([":id" => "$studentid"]);
 $studentsprofile = $sprofile->fetchAll(pdo::FETCH_ASSOC);
 
 ?>
