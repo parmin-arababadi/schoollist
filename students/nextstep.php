@@ -6,10 +6,9 @@ require_once "svalidation.php";
 $class_id = $_SESSION['classid'];
 $teacherid = $_SESSION['teacherid'];
 $lessonid = $_SESSION['lessonid'];
-$c = $pdo->prepare('select teachers.first_name,lesson,title,classes.id,class_start,class_end from classes join teachers on teachers.id=classes.teacher_id join lessons on lessons.id=classes.lesson_id join week_day on week_day.id=classes.class_day where teachers.id=:teacherid and lesson_id=:lessonid');
-$c->execute([":teacherid" => "$teacherid", ":lessonid" => "$lessonid"]);
+$c = $pdo->prepare('select teachers.first_name,lesson,title,classes.id,class_start,class_end from classes join teachers on teachers.id=classes.teacher_id join lessons on lessons.id=classes.lesson_id join week_day on week_day.id=classes.class_day where teachers.id=:teacherid');
+$c->execute([":teacherid" => "$teacherid"]);
 $classes = $c->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 <html>
 
@@ -147,41 +146,14 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $classid = $_POST['classid'];
-    $oldclass = $pdo->prepare("select * from student_classes where class_id=:classid and student_id=:studentid ");
-    $oldclass->execute([":classid" => "$classid", ":studentid" => "$studentid"]);
-    $oldclass = $oldclass->fetch();
-    $timecheck = $pdo->prepare("select class_start,class_day,class_end from classes where classes.id=:classid");
-    $timecheck->execute(["classid" => "$classid"]);
-    $timecheck = $timecheck->fetch();
-    $classstart = $timecheck['class_start'];
-    $classend = $timecheck['class_end'];
-    $classday = $timecheck['class_day'];
-    $oldtime = $pdo->prepare("select class_start,class_end,class_day from classes join student_classes on classes.id=student_classes.id where student_id=:studentid and class_start>=:classstart and class_day=:classday");
-    $oldtime->execute([":studentid" => "$studentid", ":classstart" => "$classstart", "classday" => "$classday"]);
-    $oldtime = $oldtime->fetchAll();
-    foreach ($oldtime as $old) {
-        $oldstart = $old['class_start'];
-        $oldend = $old['class_end'];
-        $oldday = $old['class_day'];
-    }
-
-
-    if (!empty($oldstart || $oldend || $oldday)) {
-        echo '<p class="error2"> ساعت کلاس شما با کلاس های دیگرتان تداخل دارند</p>';
-    } else {
-        if (empty($oldclass)) {
-            foreach ($classes as $class) {
-                if ($class['id'] == $classid) {
-                    $newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
-                    $newclass->execute([":student" => "$studentid", ":class" => "$classid"]);
-                    header("location:studentmenu.php");
-                    exit;
-                } else {
-                    echo '<p class="error" style="height: 50px;"> از شماره کلاس های نمایش داده شده انتخاب کنید </p>';
-                }
-            }
+    foreach ($classes as $class) {
+        if ($class['id'] == $classid) {
+            $newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
+            $newclass->execute([":student" => "$studentid", ":class" => "$classid"]);
+            header("location:studentmenu.php");
+            exit;
         } else {
-            echo '<p class="error2"> خطا:این کلاس یکبار برای شما ثبت شده</p>';
+            echo '<p class="error" style="height: 50px;"> از شماره کلاس های نمایش داده شده انتخاب کنید </p>';
         }
     }
 }

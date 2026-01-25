@@ -16,10 +16,10 @@ session_start();
 
 <body>
     <div class="box2">
-       
+
         <form method="post">
             <p class="title5"> کد ملی</p>
-            <input type="text" id="nationalcode" name="nationalcode" class="form5"
+            <input type="number" id="nationalcode" name="nationalcode" class="form5"
                 placeholder="کد ملی خود را وارد کنید">
             <label for="nationalcode"></label>
             <p class="title5">رمز عبور </p>
@@ -43,49 +43,56 @@ session_start();
 
 </html>
 <?php
-require_once("connection.php");
+require_once("both/connection.php");
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $nationalcode = $_POST["nationalcode"];
-    $password = $_POST["password"]??' ';
-    $user_type = $_POST["user_type"];
+    $pvalidation = htmlspecialchars($_POST["password"]);
+    if ($pvalidation) {
+        $nationalcode = $_POST["nationalcode"];
+        $password = $_POST["password"] ?? ' ';
+        $user_type = $_POST["user_type"];
 
-
-    $student = $pdo->prepare("select * from students where national_code=:nationalcode");
-    $student->execute([ "nationalcode" => "$nationalcode"]);
-    $result = $student->fetch();
-
-
-
-    if (!empty($result)) {
-        $hashedPassword = $result['password'];
-        $last_name = $result['last_name'];
-        $studentid=$result['id'];
-        $first_name=$result['first_name'];
-        $x = password_verify($password, $hashedPassword);
-        if ($x) {
-
-            setcookie(
-                "first_name",
-                "$first_name",
-                time() + 3600,
-                "/"
-            );
-            setcookie(
-                "last_name",
-                "$last_name",
-                time() + 3600,
-                "/"
-            );
-            $_SESSION["id"] = $studentid;
-            $_SESSION["user_type"] = $user_type;
-            $_SESSION["nationalcode"] = $nationalcode;
-            header("location:studentmenu.php");
-            exit;
-        } else {
-            echo '<p class="error">رمز عبور اشتباه است</p>';
+        if (strlen($password) < 8) {
+            echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
         }
-    } else {
-        echo '<p class="error"> کاربری با این نام وجود ندارد </p>';
+        if (strlen($nationalcode) != 10) {
+            echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
+        } else {
+            $student = $pdo->prepare("select * from students where national_code=:nationalcode");
+            $student->execute(["nationalcode" => "$nationalcode"]);
+            $result = $student->fetch();
+
+            if (!empty($result)) {
+                $hashedPassword = $result['password'];
+                $last_name = $result['last_name'];
+                $studentid = $result['id'];
+                $first_name = $result['first_name'];
+                $x = password_verify($password, $hashedPassword);
+                if ($x) {
+
+                    setcookie(
+                        "first_name",
+                        "$first_name",
+                        time() + 3600,
+                        "/"
+                    );
+                    setcookie(
+                        "last_name",
+                        "$last_name",
+                        time() + 3600,
+                        "/"
+                    );
+                    $_SESSION["id"] = $studentid;
+                    $_SESSION["user_type"] = $user_type;
+                    $_SESSION["nationalcode"] = $nationalcode;
+                    header("location:studentmenu.php");
+                    exit;
+                } else {
+                    echo '<p class="error">رمز عبور اشتباه است</p>';
+                }
+            } else {
+                echo '<p class="error"> کد ملی اشتباه است یا ثبتنام نیستید </p>';
+            }
+        }
     }
 }
 ?>

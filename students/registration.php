@@ -16,22 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $check = $pdo->prepare("select id from classes where lesson_id=:lessonid and teacher_id=:teacherid");
     $check->execute([":teacherid" => "$teacherid", ":lessonid" => "$lessonid"]);
     $check = $check->fetch();
-    if (empty($check)) {
-        echo '<p class="error2">معلم مورد نظر شما این درس را تدریس نمیکند</p>';
-    }
-    if ($lessonid=='S')
-
-    $repeatedlesson = $pdo->prepare("select student_classes.id from student_classes join classes on classes.id=student_classes.class_id where student_classes.student_id=:studentid and classes.lesson_id=:lessonid");
-    $repeatedlesson->execute([":studentid" => "$studentid", ":lessonid" => "$lessonid"]);
-    $repeatedlesson = $repeatedlesson->fetch();
-    if (!empty($repeatedlesson)) {
-        echo '<p class="error2">نمیتوانید یک درس را دوبار ثبت نام کنید</p>';
-    } else {
+    if (!empty($check)) {
         $_SESSION['classid'] = $check['id'];
         $_SESSION['teacherid'] = $teacherid;
         $_SESSION['lessonid'] = $lessonid;
         header('location:nextstep.php');
         exit;
+    } else {
+echo '<p class="error2">معلم مورد نظر شما این درس را تدریس نمیکند</p>';
     }
 }
 ?>
