@@ -49,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['classid'] = $check['id'];
             $_SESSION['teacherid'] = $teacherid;
             $_SESSION['lessonid'] = $lessonid;
-            // header('location:nextstep.php');
-            // exit;
+            header('location:nextstep.php');
+            exit;
         }
     }
 }
