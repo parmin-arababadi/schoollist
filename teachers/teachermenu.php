@@ -8,7 +8,7 @@ require_once ("tvalidation.php");
 
 <head>
     <title>mainmenu</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 
@@ -59,13 +59,13 @@ require_once ("tvalidation.php");
     <div style="text-align: center; direction: rtl;">
         <div id="classes">
             <a href="teacherclasses.php">
-                <img src="images/class.jpg">
+                <img src="../images/class.jpg">
                 <div style="color: black; margin-top: 10px">دیدن اطلاعات کلاس های من</div>
             </a>
         </div>
         <div id="marks">
             <a href="tmarklist.php">
-                <img src="images/School-Marks.jpg">
+                <img src="../images/School-Marks.jpg">
                 <div style="color: black; margin-top: 10px"> نمرات دانش آموزان من</div>
             </a>
         </div>

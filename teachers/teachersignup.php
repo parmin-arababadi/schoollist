@@ -5,10 +5,10 @@ session_start();
 
 <head>
     <title>teacherlist</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <style>
         body {
-            background-image: url(teacher.jpg);
+            background-image: url(../images/teacher.jpg);
             background-position: right;
             background-repeat: no-repeat;
             background-size: 450px;
@@ -58,59 +58,67 @@ session_start();
 
 </html>
 <?php
-require_once "both/connection.php";
+require_once "../both/connection.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-     if (strlen($password) < 8) {
-        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
-    }
-    if (strlen($nationalCode) != 10) {
-        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
-    } else {
 
-        $firstName = $_POST["first_name"];
-        $lastName = $_POST["last_name"];
-        $fatherName = $_POST["father_name"];
-        $birthDate = $_POST["birth_date"];
-        $education = $_POST["education"];
-        $phoneNumber = $_POST["phone_number"];
-        $national_code = $_POST["nationalCode"];
-        $user_type = $_POST["user_type"];
-        $password = $_POST["password"];
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $fvalidation = htmlspecialchars($_POST["first_name"]);
+    $lvalidation = htmlspecialchars($_POST["last_name"]);
+    $ftvalidation = htmlspecialchars($_POST["father_name"]);
+    $evalidation = htmlspecialchars($_POST["education"]);
+    if ($evalidation && $ftvalidation && $lvalidation && $fvalidation) {
+        if (strlen($password) < 8) {
+            echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
+        }
+        if (strlen($nationalCode) != 10) {
+            echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
+        } else {
+
+            $firstName = $_POST["first_name"];
+            $lastName = $_POST["last_name"];
+            $fatherName = $_POST["father_name"];
+            $birthDate = $_POST["birth_date"];
+            $education = $_POST["education"];
+            $phoneNumber = $_POST["phone_number"];
+            $national_code = $_POST["nationalCode"];
+            $user_type = $_POST["user_type"];
+            $password = $_POST["password"];
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
-        $newstudent = $pdo->prepare("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
+            $newstudent = $pdo->prepare("insert into teachers(first_name,last_name,national_code,father_name,birth_date,
 education,phone_number,membership_date,password) 
 VALUES(:first_name,:last_name,:national_code,:father_name,:birth_date,:education,:phone_number,curdate(),:password)");
-        $newstudent->execute([
-            ":first_name" => "$firstName",
-            ":last_name" => "$lastName",
-            ":national_code" => "$nationalCode",
-            ":father_name" => "$fatherName",
-            ":phone_number" => "$phoneNumber",
-            ":education" => "$education",
-            ":birth_date" => "$birthDate",
-            ":password" => "$hashedPassword"
-        ]);
-        $id = $pdo->prepare("select id from teachers where national_code=:national_code");
-        $id->execute([":national_code" => "$national_code"]);
-        $id = $id->fetch();
-        $teacherid = $id['id'];
-        setcookie(
-            "first_name",
-            "$firstName",
-            time() + 3600,
-            "/"
-        );
-        $_SESSION["teacherid"] = $teacherid;
-        $_SESSION["phone_number"] = $phoneNumber;
-        $_SESSION["nationalCode"] = $nationalCode;
-        $_SESSION["user_type"] = $user_type;
-        $_SESSION["password"] = $hashedPassword;
+            $newstudent->execute([
+                ":first_name" => "$firstName",
+                ":last_name" => "$lastName",
+                ":national_code" => "$nationalCode",
+                ":father_name" => "$fatherName",
+                ":phone_number" => "$phoneNumber",
+                ":education" => "$education",
+                ":birth_date" => "$birthDate",
+                ":password" => "$hashedPassword"
+            ]);
+            $id = $pdo->prepare("select id from teachers where national_code=:national_code");
+            $id->execute([":national_code" => "$national_code"]);
+            $id = $id->fetch();
+            $teacherid = $id['id'];
+            setcookie(
+                "first_name",
+                "$firstName",
+                time() + 3600,
+                "/"
+            );
+            $_SESSION["teacherid"] = $teacherid;
+            $_SESSION["phone_number"] = $phoneNumber;
+            $_SESSION["nationalCode"] = $nationalCode;
+            $_SESSION["user_type"] = $user_type;
+            $_SESSION["password"] = $hashedPassword;
 
-        header("Location: teachermenu.php");
-        exit();
+            header("Location: teachermenu.php");
+            exit();
+        }
+    } else {
+        echo '<p class="error2">فلید ها معتبر نیستند</p>';
     }
 }
-
 ?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "both/connection.php";
+require_once "../both/connection.php";
 require_once "sprofile.php";
 require_once "svalidation.php";
 $sprofile = $pdo->prepare('select first_name,last_name,father_name,national_code,birth_date from students where id=:id');
@@ -12,7 +12,7 @@ $studentsprofile = $sprofile->fetchAll(pdo::FETCH_ASSOC);
 
 <head>
     <title>profile</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>

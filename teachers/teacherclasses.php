@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("both/connection.php");
+require_once("../both/connection.php");
 require_once ("teacherprofile.php");
 require_once("tvalidation.php");
 $teachers = $pdo->prepare("SELECT class_start,title,class_end FROM classes join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day where 
@@ -11,7 +11,8 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
 <html>
 
 <head>
-    <link rel="stylesheet" href="CSS/style.css">
+    <title>my classes</title>
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -45,6 +46,7 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
             margin-top: 30px;
             margin-right: 10px;
             margin-left: auto;
+            border-collapse: collapse;
         }
 
         a {

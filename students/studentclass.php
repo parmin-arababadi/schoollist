@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "both/connection.php";
+require_once "../both/connection.php";
 require_once "sprofile.php";
 require_once "svalidation.php";
 $studentclass = $pdo->prepare("SELECT teachers.first_name,teachers.last_name,lesson,week_day.title,class_start,class_end FROM classes join lessons on lessons.id=classes.lesson_id join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day join student_classes on class_id=classes.id join students on students.id=student_id where students.national_code=:national_code
@@ -12,7 +12,7 @@ $studentclasses = $studentclass->fetchAll(PDO::FETCH_ASSOC);
 <html>
 
 <head>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -71,7 +71,7 @@ $studentclasses = $studentclass->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <header>
-    <div class="mainheader">
+        <div class="mainheader">
 
             <a href="studentmenu.php"><i class='fas fa-bars'></i>پنل شخصی</a>
             <a href="studentclass.php"><i class='fas fa-school'></i>کلاس های من</a>
@@ -79,36 +79,36 @@ $studentclasses = $studentclass->fetchAll(PDO::FETCH_ASSOC);
 
             <a href="#contact"><i class='fas fa-phone'></i>تماس با ما </a>
         </div>
-        </header>
-        <main>
-    <table>
-        <tr>
-            <th>ساعت شروع کلاس</th>
-            <th>ساعت پایان کلاس</th>
-            <th>روز کلاس</th>
-            <th>درس</th>
-            <th>نام خانوادگی معلم</th>
-            <th>نام معلم</th>
+    </header>
+    <main>
+        <table>
+            <tr>
+                <th>ساعت شروع کلاس</th>
+                <th>ساعت پایان کلاس</th>
+                <th>روز کلاس</th>
+                <th>درس</th>
+                <th>نام خانوادگی معلم</th>
+                <th>نام معلم</th>
 
-        </tr>
-        <?php if (!empty($studentclasses)) {
-            foreach ($studentclasses as $class) {
-                echo "<tr>";
-                echo "<td>" . $class['class_start'] . "</td>";
-                echo "<td>" . $class['class_end'] . "</td>";
-                echo "<td>" . $class['title'] . "</td>";
-                echo "<td>" . $class['lesson'] . "</td>";
-                echo "<td>" . $class['last_name'] . "</td>";
-                echo "<td>" . $class['first_name'] . "</td>";
-                echo "</tr>";
+            </tr>
+            <?php if (!empty($studentclasses)) {
+                foreach ($studentclasses as $class) {
+                    echo "<tr>";
+                    echo "<td>" . $class['class_start'] . "</td>";
+                    echo "<td>" . $class['class_end'] . "</td>";
+                    echo "<td>" . $class['title'] . "</td>";
+                    echo "<td>" . $class['lesson'] . "</td>";
+                    echo "<td>" . $class['last_name'] . "</td>";
+                    echo "<td>" . $class['first_name'] . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='6'>هیچ کلاسی برای شما ثبت نشده است.</td></tr>";
             }
-        } else {
-            echo "<tr><td colspan='6'>هیچ کلاسی برای شما ثبت نشده است.</td></tr>";
-        }
-        ?>
-    </table>
+            ?>
+        </table>
     </main>
-        <footer>
+    <footer>
         <div style=" background-color: rgb(2, 2, 164);
     text-align: right;
     direction: rtl;

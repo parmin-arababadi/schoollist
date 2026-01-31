@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("both/connection.php");
+require_once("../both/connection.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nationalcode = $_POST["nationalcode"];
     $password = $_POST["password"];
@@ -8,45 +8,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (strlen($password) < 8) {
         echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
     }
-    if (strlen($nationalCode) != 10) {
+    if (strlen($nationalcode) != 10) {
         echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
     } else {
-    $teacher = $pdo->prepare("select password,last_name,first_name,id from teachers where national_code=:nationalcode");
-    $teacher->execute([":nationalcode" => "$nationalcode"]);
-    $result = $teacher->fetch();
+        $teacher = $pdo->prepare("select password,last_name,first_name,id from teachers where national_code=:nationalcode");
+        $teacher->execute([":nationalcode" => "$nationalcode"]);
+        $result = $teacher->fetch();
 
-    if (!empty($result)) {
-        $hashedPassword = $result['password'];
-        $last_name = $result['last_name'];
-        $first_name = $result['first_name'];
-        $teacherid = $result['id'];
-        $x = password_verify($password, $hashedPassword);
-        if ($x) {
-            setcookie(
-             "first_name",
-             $first_name,
-             time()+3600,
-             "/"
-            );
-            $_SESSION["id"] = $teacherid;
-            $_SESSION["nationalcode"] = $nationalcode;
-            $_SESSION["user_type"] = $user_type;
-            header("location:teachermenu.php");
-            exit;
+        if (!empty($result)) {
+            $hashedPassword = $result['password'];
+            $last_name = $result['last_name'];
+            $first_name = $result['first_name'];
+            $teacherid = $result['id'];
+            $x = password_verify($password, $hashedPassword);
+            if ($x) {
+                setcookie(
+                    "first_name",
+                    $first_name,
+                    time() + 3600,
+                    "/"
+                );
+                $_SESSION["id"] = $teacherid;
+                $_SESSION["nationalcode"] = $nationalcode;
+                $_SESSION["user_type"] = $user_type;
+                header("location:teachermenu.php");
+                exit;
+            } else {
+                echo '<p class="error">رمز عبور اشتباه است</p>';
+            }
         } else {
-            echo '<p class="error">رمز عبور اشتباه است</p>';
+            echo '<p class="error">کد ملی یا نام خود را  اشتباه وارد کردید</p>';
         }
-    } else {
-        echo '<p class="error">کد ملی یا نام خود را  اشتباه وارد کردید</p>';
     }
-}
 }
 ?>
 <html>
 
 <head>
     <title>login</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <style>
         a {
             text-decoration: none;

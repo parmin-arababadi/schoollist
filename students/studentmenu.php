@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "both/connection.php";
+require_once "../both/connection.php";
 require_once "sprofile.php";
 require_once "svalidation.php";
 ?>
@@ -8,7 +8,7 @@ require_once "svalidation.php";
 
 <head>
     <title>menu</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 
@@ -53,19 +53,19 @@ require_once "svalidation.php";
             <a href="https://medu.gov.ir/">
                 <img style="margin-left: 10px; width: 200px;
     height: 200px;
-    border-radius: 20px; margin-right:0px; margin-top: 20px;  " src="images/government2.jpg">
+    border-radius: 20px; margin-right:0px; margin-top: 20px;  " src="../images/government2.jpg">
                 <div style="margin-top: 1px; color:black;">خدمات الکترونیک دولت </div>
             </a>
             <a href="registration.php">
                 <img style=" width: 150px;
     height: 150px;
-    border-radius: 20px; margin-right:15px; margin-top: 50px; margin-left: 0px;" src="images/newclass.png">
+    border-radius: 20px; margin-right:15px; margin-top: 50px; margin-left: 0px;" src="../images/newclass.png">
                 <div style="margin-top: 10px; color:black;"> ثبت نام</div>
             </a>
             <a href="studentprofile.php">
                 <img style="    width: 150px;
     height: 150px;
-    border-radius: 20px;  margin-top: 50px;" src="images/studenticon.jpg">
+    border-radius: 20px;  margin-top: 50px;" src="../images/studenticon.jpg">
                 <div style="margin-top: 10px; color:black;"> پروفایل من</div>
             </a>
 
@@ -78,7 +78,7 @@ require_once "svalidation.php";
             border: 1.5px rgba(192, 192, 244, 1) solid;
             margin-top: 20px;
             border-radius: 5px;
-        " src="class.jpg">
+        " src="../images/class.jpg">
                     <div style="color: black; margin-top: 10px">دیدن کلاس های من</div>
                 </a>
             </div>
@@ -89,7 +89,7 @@ require_once "svalidation.php";
             border: 1.5px rgba(192, 192, 244, 1) solid;
             margin-top: 20px;
             border-radius: 5px;
-        " src="School-Marks.jpg">
+        " src="../images/School-Marks.jpg">
                     <div style="color: black; margin-top: 10px">کارنامه من</div>
                 </a>
             </div>

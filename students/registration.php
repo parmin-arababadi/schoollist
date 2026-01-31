@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "both/connection.php";
+require_once "../both/connection.php";
 require_once "sprofile.php";
 require_once "svalidation.php";
 $teachers = $pdo->prepare("select id,first_name,last_name from teachers");
@@ -16,14 +16,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $check = $pdo->prepare("select id from classes where lesson_id=:lessonid and teacher_id=:teacherid");
     $check->execute([":teacherid" => "$teacherid", ":lessonid" => "$lessonid"]);
     $check = $check->fetch();
-    if (!empty($check)) {
-        $_SESSION['classid'] = $check['id'];
-        $_SESSION['teacherid'] = $teacherid;
-        $_SESSION['lessonid'] = $lessonid;
-        header('location:nextstep.php');
-        exit;
-    } else {
-echo '<p class="error2">معلم مورد نظر شما این درس را تدریس نمیکند</p>';
+    if (empty($check)) {
+        echo '<p class="error2">معلم مورد نظر شما این درس را تدریس نمیکند</p>';
+    }
+    $prerequisite = $pdo->prepare("select * from prerequisite where mainlesson_id=:lessonid");
+    $prerequisite->execute([":lessonid" => "$lessonid"]);
+    $prerequisite = $prerequisite->fetchAll();
+    foreach ($prerequisite as $classvalidation) {
+        $prerequisite_id = $classvalidation['prerequisite_id'];
+        $mainlesson_id = $classvalidation['mainlesson_id'];
+        $correctid = $classvalidation['id'];
+    }
+    if (!empty($prerequisite_id || $mainlesson_id || $correctid)) {
+
+        $passed_lesson = $pdo->prepare("select mark from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on classes.id=student_classes.class_id where lesson_id=:lessonid and student_id=:studentid");
+        $passed_lesson->execute(["lessonid" => "$prerequisite_id", "studentid" => "$studentid"]);
+        $passed_lesson = $passed_lesson->fetch();
+        $lastmark = $passed_lesson['mark'];
+
+        if (empty($lastmark) || $lastmark < 10) {
+            echo '<p class="error">برای ثبتنام درس مورد نظر,درس های پیش نیاز را پاس کنید';
+        } else {
+
+        }
+
+        $repeatedlesson = $pdo->prepare("select student_classes.id from student_classes join classes on classes.id=student_classes.class_id where student_classes.student_id=:studentid and classes.lesson_id=:lessonid");
+        $repeatedlesson->execute([":studentid" => "$studentid", ":lessonid" => "$lessonid"]);
+        $repeatedlesson = $repeatedlesson->fetch();
+        if (!empty($repeatedlesson)) {
+            echo '<p class="error2">نمیتوانید یک درس را دوبار ثبت نام کنید</p>';
+        } else {
+            $_SESSION['classid'] = $check['id'];
+            $_SESSION['teacherid'] = $teacherid;
+            $_SESSION['lessonid'] = $lessonid;
+            // header('location:nextstep.php');
+            // exit;
+        }
     }
 }
 ?>
@@ -31,7 +59,7 @@ echo '<p class="error2">معلم مورد نظر شما این درس را تد�
 
 <head>
     <title>registration</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
