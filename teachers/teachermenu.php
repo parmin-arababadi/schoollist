@@ -1,7 +1,13 @@
 <?php
 session_start();
-require_once ("teacherprofile.php");
-require_once ("tvalidation.php");
+require_once "teacherprofile.php";
+$profile = getprofile();
+$teacherid = $profile["teacherid"];
+$user_type = $profile["user_type"];
+$nationalcode = $profile["nationalcode"];
+require_once "tvalidation.php";
+validation($teacherid, $user_type);
+
 ?>
 
 <html>

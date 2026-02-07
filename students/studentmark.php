@@ -2,16 +2,21 @@
 session_start();
 require_once "../both/connection.php";
 require_once "sprofile.php";
+$profile = getprofile();
+$studentid = $profile["studentid"];
+$user_type = $profile["user_type"];
+$nationalcode = $profile["nationalcode"];
 require_once "svalidation.php";
-
-$studentmark=$pdo->prepare("select teachers.first_name,mark,lesson from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on student_classes.class_id=classes.id join teachers on classes.teacher_id=teachers.id join lessons on classes.lesson_id=lessons.id join students on student_classes.student_id=students.id where students.national_code=:national_code");
-$studentmark->execute([":national_code"=>"$nationalcode"]);
-$studentmarks=$studentmark->fetchAll(pdo::FETCH_ASSOC);
+validation($studentid,$user_type);
+$studentmark = $pdo->prepare("select teachers.first_name,mark,lesson from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on student_classes.class_id=classes.id join teachers on classes.teacher_id=teachers.id join lessons on classes.lesson_id=lessons.id join students on student_classes.student_id=students.id where students.national_code=:national_code");
+$studentmark->execute([":national_code" => "$nationalcode"]);
+$studentmarks = $studentmark->fetchAll(pdo::FETCH_ASSOC);
 
 ?>
 <html>
-    <head>
-        <link rel="stylesheet" href="../CSS/style.css">
+
+<head>
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -70,7 +75,7 @@ $studentmarks=$studentmark->fetchAll(pdo::FETCH_ASSOC);
 
 <body>
     <header>
-    <div class="mainheader">
+        <div class="mainheader">
 
             <a href="studentmenu.php"><i class='fas fa-bars'></i>پنل شخصی</a>
             <a href="studentclass.php"><i class='fas fa-school'></i>کلاس های من</a>
@@ -78,32 +83,32 @@ $studentmarks=$studentmark->fetchAll(pdo::FETCH_ASSOC);
 
             <a href="#contact"><i class='fas fa-phone'></i>تماس با ما </a>
         </div>
-        </header>
-        <main>
-<table>
-    <tr>
-        <th>نمره</th>
-        <th>نام درس</th>
-        <th>نام معلم</th>
-    </tr>
+    </header>
+    <main>
+        <table>
+            <tr>
+                <th>نمره</th>
+                <th>نام درس</th>
+                <th>نام معلم</th>
+            </tr>
 
-<?php
-if (!empty($studentmarks)){
-foreach($studentmarks as $mark){
-        echo "<tr>";
-    echo "<td>".$mark['mark']."</td>";
-    echo "<td>".$mark['lesson']."</td>";
-    echo "<td>".$mark['first_name']."</td>";
-    echo "</tr>";
-}
-}else {
-            echo "<tr><td colspan='3'>هیچ نمره ای برای شما ثبت نشده است.</td></tr>";
-        }
-?>
-</table>
-        </main>
-        <footer>
-             <div style=" background-color: rgb(2, 2, 164);
+            <?php
+            if (!empty($studentmarks)) {
+                foreach ($studentmarks as $mark) {
+                    echo "<tr>";
+                    echo "<td>" . $mark['mark'] . "</td>";
+                    echo "<td>" . $mark['lesson'] . "</td>";
+                    echo "<td>" . $mark['first_name'] . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='3'>هیچ نمره ای برای شما ثبت نشده است.</td></tr>";
+            }
+            ?>
+        </table>
+    </main>
+    <footer>
+        <div style=" background-color: rgb(2, 2, 164);
     text-align: right;
     direction: rtl;
     width: cover;
@@ -126,6 +131,7 @@ foreach($studentmarks as $mark){
                 <p>فردا کلاس ریاضی ساعت 10 شروع میشود</p>
             </div>
         </div>
-        </footer>
+    </footer>
     </head>
+
 </html>

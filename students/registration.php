@@ -2,7 +2,13 @@
 session_start();
 require_once "../both/connection.php";
 require_once "sprofile.php";
+$profile = getprofile();
+$studentid = $profile["studentid"];
+$user_type = $profile["user_type"];
 require_once "svalidation.php";
+validation($studentid, $user_type);
+
+// die(var_dump($profile));
 $teachers = $pdo->prepare("select id,first_name,last_name from teachers");
 $teachers->execute();
 $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
@@ -22,35 +28,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $prerequisite = $pdo->prepare("select * from prerequisite where mainlesson_id=:lessonid");
     $prerequisite->execute([":lessonid" => "$lessonid"]);
     $prerequisite = $prerequisite->fetchAll();
+    // $prerequisite->debugDumpParams();
+    // die(var_dump($prerequisite));
     foreach ($prerequisite as $classvalidation) {
         $prerequisite_id = $classvalidation['prerequisite_id'];
         $mainlesson_id = $classvalidation['mainlesson_id'];
         $correctid = $classvalidation['id'];
     }
+
     if (!empty($prerequisite_id || $mainlesson_id || $correctid)) {
 
-        $passed_lesson = $pdo->prepare("select mark from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on classes.id=student_classes.class_id where lesson_id=:lessonid and student_id=:studentid");
-        $passed_lesson->execute(["lessonid" => "$prerequisite_id", "studentid" => "$studentid"]);
+        $passed_lesson = $pdo->prepare("select mark from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on classes.id=student_classes.class_id where lesson_id=:lessonid and student_classes.student_id=:studentid");
+        $passed_lesson->execute([":lessonid" => "$prerequisite_id", ":studentid" => "$studentid"]);
         $passed_lesson = $passed_lesson->fetch();
-        $lastmark = $passed_lesson['mark'];
+        $lastmark = $passed_lesson['mark']??' ';
 
         if (empty($lastmark) || $lastmark < 10) {
-            echo '<p class="error">برای ثبتنام درس مورد نظر,درس های پیش نیاز را پاس کنید';
+            echo '<p class="error2">درس های پیش نیاز را پاس کنید';
         } else {
 
-        }
 
-        $repeatedlesson = $pdo->prepare("select student_classes.id from student_classes join classes on classes.id=student_classes.class_id where student_classes.student_id=:studentid and classes.lesson_id=:lessonid");
-        $repeatedlesson->execute([":studentid" => "$studentid", ":lessonid" => "$lessonid"]);
-        $repeatedlesson = $repeatedlesson->fetch();
-        if (!empty($repeatedlesson)) {
-            echo '<p class="error2">نمیتوانید یک درس را دوبار ثبت نام کنید</p>';
-        } else {
-            $_SESSION['classid'] = $check['id'];
-            $_SESSION['teacherid'] = $teacherid;
-            $_SESSION['lessonid'] = $lessonid;
-            header('location:nextstep.php');
-            exit;
+            $repeatedlesson = $pdo->prepare("select student_classes.id from student_classes join classes on classes.id=student_classes.class_id where student_classes.student_id=:studentid and classes.lesson_id=:lessonid");
+            $repeatedlesson->execute([":studentid" => "$studentid", ":lessonid" => "$lessonid"]);
+            $repeatedlesson = $repeatedlesson->fetch();
+            if (!empty($repeatedlesson)) {
+                echo '<p class="error2">نمیتوانید یک درس را دوبار ثبت نام کنید</p>';
+            } else {
+                $_SESSION['classid'] = $check['id'];
+                $_SESSION['teacherid'] = $teacherid;
+                $_SESSION['lessonid'] = $lessonid;
+                header('location:nextstep.php');
+                exit;
+            }
         }
     }
 }

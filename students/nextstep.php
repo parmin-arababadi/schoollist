@@ -2,7 +2,11 @@
 session_start();
 require_once '../both/connection.php';
 require_once "sprofile.php";
+$profile = getprofile();
+$studentid = $profile["studentid"];
+$user_type = $profile["user_type"];
 require_once "svalidation.php";
+validation($studentid, $user_type);
 $class_id = $_SESSION['classid'];
 $teacherid = $_SESSION['teacherid'];
 $lessonid = $_SESSION['lessonid'];

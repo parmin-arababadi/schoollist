@@ -97,6 +97,11 @@ value(:first_name,:last_name,:password,:fathername,:nationalCode,:birth_date)');
                 "last_name" => "$last_name"
             ]);
 
+            $studentid = $pdo->prepare("select id from students where national_code=:nationalcode");
+            $studentid->execute([":nationalcode" => "$nationalCode"]);
+            $studentid = $studentid->fetch();
+            $s_id = $studentid['id'];
+            $_SESSION["id"] = $s_id;
             $_SESSION["user_type"] = $user_type;
             setcookie(
                 "first_name",
