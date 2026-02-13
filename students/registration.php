@@ -1,14 +1,12 @@
 <?php
 session_start();
 require_once "../both/connection.php";
-require_once "sprofile.php";
-$profile = getprofile();
-$studentid = $profile["studentid"];
-$user_type = $profile["user_type"];
+require_once "../both/profile.php";
 require_once "svalidation.php";
+$profile = getprofile();
+$studentid = $profile["user_id"] ?? null;
+$user_type = $profile["user_type"] ?? null;
 validation($studentid, $user_type);
-
-// die(var_dump($profile));
 $teachers = $pdo->prepare("select id,first_name,last_name from teachers");
 $teachers->execute();
 $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);

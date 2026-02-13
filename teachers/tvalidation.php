@@ -1,11 +1,10 @@
 <?php
-
 function validation(
-    $teacherid,
-    $user_type
+    $teacherid=null,
+    $user_type=null
 ) {
-    if (!isset($user_type, $teacherid) || $user_type != 'teacher') {
-        header('location:teacherlogin.php');
+    if ($user_type==null ||$teacherid==null || $user_type != 'teacher') {
+        header('location:../both/index.php');
         exit;
     }
 }

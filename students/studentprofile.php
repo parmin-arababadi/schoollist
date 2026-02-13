@@ -1,12 +1,11 @@
 <?php
 session_start();
 require_once "../both/connection.php";
-require_once "sprofile.php";
-$profile = getprofile();
-$profile = getprofile();
-$studentid = $profile["studentid"];
-$user_type = $profile["user_type"];
+require_once "../both/profile.php";
 require_once "svalidation.php";
+$profile = getprofile();
+$studentid = $profile["user_id"] ?? null;
+$user_type = $profile["user_type"] ?? null;
 validation($studentid, $user_type);
 $sprofile = $pdo->prepare('select first_name,last_name,father_name,national_code,birth_date from students where id=:id');
 $sprofile->execute([":id" => "$studentid"]);

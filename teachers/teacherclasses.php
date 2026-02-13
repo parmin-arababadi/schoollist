@@ -1,12 +1,12 @@
 <?php
 session_start();
-require_once("../both/connection.php");
-require_once("teacherprofile.php");
+require_once "../both/connection.php";
+require_once "../both/profile.php";
+require_once "tvalidation.php";
 $profile = getprofile();
-$teacherid = $profile['teacherid'];
-$user_type = $profile['user_type'];
-$nationalcode = $profile['nationalcode'];
-require_once("tvalidation.php");
+$teacherid = $profile['user_id'] ?? null;
+$user_type = $profile['user_type'] ?? null;
+$nationalcode = $profile['nationalcode'] ?? null;
 validation($teacherid, $user_type);
 $teachers = $pdo->prepare("SELECT class_start,title,class_end FROM classes join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day where 
  teachers.id=:id");
@@ -82,6 +82,9 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
 
         <a href="#contact"><i class='fas fa-phone'></i>تماس با ما </a>
     </div>
+    <div class="print">
+        <a href="tclasslist.php">پرینت لیست کلاس ها</a>
+    </div>
     <table>
         <tr>
             <th>ساعت شروع کلاس</th>
@@ -100,7 +103,7 @@ $teachers = $teachers->fetchAll(PDO::FETCH_ASSOC);
             echo "<tr><td colspan='3'>هیچ کلاسی برای این معلم ثبت نشده است.</td></tr>";
         }
         ?>
-
+        
 
     </table>
     <div style=" background-color: rgb(2, 2, 164);

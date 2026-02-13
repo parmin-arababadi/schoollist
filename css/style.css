@@ -777,3 +777,16 @@ td {
     box-shadow: none;
     border: rgb(163, 0, 0);
 }
+.print{
+    width: 150px;
+    height: 30px;
+    background-color: rgb(83, 83, 241);
+    border: rgb(83, 83, 241);
+    margin-left: 1080px;
+    margin-top: 10px;
+    padding-right: 5px;
+    padding-top: 5px;
+    text-align: right;
+    justify-content: right;
+    border-radius: 10px;
+}

@@ -1,8 +1,8 @@
 <?php
-function validation($studentid, $user_type)
+function validation($studentid=null, $user_type=null)
 {
-    if (!isset($user_type, $studentid) || $user_type != 'student') {
-        header("location:studentlogin.php");
+    if ($user_type==null ||$studentid==null || $user_type != 'student') {
+        header("location:../both/index.php");
         exit;
     }
 }

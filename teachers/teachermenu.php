@@ -1,11 +1,14 @@
 <?php
 session_start();
-require_once "teacherprofile.php";
-$profile = getprofile();
-$teacherid = $profile["teacherid"];
-$user_type = $profile["user_type"];
-$nationalcode = $profile["nationalcode"];
+require_once "../both/profile.php";
 require_once "tvalidation.php";
+// putfile("C:\Users\G A  COMPUTERS\Documents\doc\parmin.txt","how are you");
+// $file=getfile("C:\Users\G A  COMPUTERS\Documents\doc\parmin.txt");
+// die(var_dump($file));
+$profile = getprofile();
+$teacherid = $profile["user_id"] ?? null;
+$user_type = $profile["user_type"] ?? null;
+$nationalcode = $profile["nationalcode"] ?? null;
 validation($teacherid, $user_type);
 
 ?>

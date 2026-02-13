@@ -1,12 +1,12 @@
 <?php
 session_start();
 require_once "../both/connection.php";
-require_once ("teacherprofile.php");
+require_once "../both/profile.php";
+require_once "tvalidation.php";
 $profile = getprofile();
-$teacherid = $profile['teacherid'];
-$user_type = $profile['user_type'];
-$nationalcode = $profile['nationalcode'];
-require_once ("tvalidation.php");
+$teacherid = $profile['user_id'] ?? null;
+$user_type = $profile['user_type'] ?? null;
+$nationalcode = $profile['nationalcode'] ?? null;
 validation($teacherid, $user_type);
 ?>
 
