@@ -2,12 +2,14 @@
 session_start();
 require_once "../both/connection.php";
 require_once "../both/profile.php";
-require_once "svalidation.php";
+require_once "../both/authorization.php";
+$usertype='student';
+authorization($usertype);
 $profile = getprofile();
-$studentid = $profile["user_id"] ?? null;
-$user_type = $profile["user_type"] ?? null;
-$nationalcode = $profile["nationalcode"] ?? ' ';
-validation($studentid,$user_type);
+$studentid = $profile["user_id"];
+$user_type = $profile["user_type"];
+$nationalcode = $profile["nationalcode"] ;
+
 $studentclass = $pdo->prepare("SELECT teachers.first_name,teachers.last_name,lesson,week_day.title,class_start,class_end FROM classes join lessons on lessons.id=classes.lesson_id join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day join student_classes on class_id=classes.id join students on students.id=student_id where students.national_code=:national_code
 ");
 $studentclass->execute(["national_code" => "$nationalcode"]);

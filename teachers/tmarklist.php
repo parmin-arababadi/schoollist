@@ -2,12 +2,14 @@
 session_start();
 require_once "../both/connection.php";
 require_once "../both/profile.php";
-require_once "tvalidation.php";
+require_once "../both/authorization.php";
+$usertype='teacher';
+authorization($usertype);
 $profile = getprofile();
-$teacherid = $profile['user_id'] ?? null;
-$user_type = $profile['user_type'] ?? null;
-$nationalcode = $profile['nationalcode'] ?? null;
-validation($teacherid, $user_type);
+$teacherid = $profile['user_id'];
+$user_type = $profile['user_type'];
+$nationalcode = $profile['nationalcode'];
+
 ?>
 
 <html>

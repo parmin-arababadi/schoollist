@@ -2,12 +2,13 @@
 session_start();
 require_once "../both/connection.php";
 require_once "../both/profile.php";
-require_once "svalidation.php";
+require_once "../both/authorization.php";
+$usertype='student';
+authorization($usertype);
 $profile = getprofile();
-$studentid = $profile["user_id"] ?? null;
-$user_type = $profile["user_type"] ?? null;
-$nationalcode = $profile["nationalcode"] ?? ' ';
-validation($studentid, $user_type);
+$studentid = $profile["user_id"];
+$user_type = $profile["user_type"];
+$nationalcode = $profile["nationalcode"];
 $studentmark = $pdo->prepare("select teachers.first_name,mark,lesson from student_mark join student_classes on student_mark.student_class_id=student_classes.id join classes on student_classes.class_id=classes.id join teachers on classes.teacher_id=teachers.id join lessons on classes.lesson_id=lessons.id join students on student_classes.student_id=students.id where students.national_code=:national_code");
 $studentmark->execute([":national_code" => "$nationalcode"]);
 $studentmarks = $studentmark->fetchAll(pdo::FETCH_ASSOC);

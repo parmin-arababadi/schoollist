@@ -59,6 +59,7 @@ session_start();
 </html>
 <?php
 require_once "../both/connection.php";
+require_once "../both/pncvalidation.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $fvalidation = htmlspecialchars($_POST["first_name"]);
@@ -66,13 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ftvalidation = htmlspecialchars($_POST["father_name"]);
     $evalidation = htmlspecialchars($_POST["education"]);
     if ($evalidation && $ftvalidation && $lvalidation && $fvalidation) {
-        if (strlen($password) < 8) {
-            echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
-        }
-        if (strlen($nationalCode) != 10) {
-            echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
-        } else {
-
+        $pncv = pncodevalidation();
+        echo $pncv;
+        if ($pncv == 1) {
             $firstName = $_POST["first_name"];
             $lastName = $_POST["last_name"];
             $fatherName = $_POST["father_name"];
@@ -109,16 +106,15 @@ VALUES(:first_name,:last_name,:national_code,:father_name,:birth_date,:education
                 "/"
             );
             $_SESSION["teacherid"] = $teacherid;
-            $_SESSION["phone_number"] = $phoneNumber;
             $_SESSION["nationalCode"] = $nationalCode;
             $_SESSION["user_type"] = $user_type;
-            $_SESSION["password"] = $hashedPassword;
 
             header("Location: teachermenu.php");
             exit();
         }
     } else {
-        echo '<p class="error2">فلید ها معتبر نیستند</p>';
+        echo '<p class="error2">فیلد ها معتبر نیستند</p>';
     }
 }
+
 ?>

@@ -2,12 +2,13 @@
 session_start();
 require_once "../both/connection.php";
 require_once "../both/profile.php";
-require_once "tvalidation.php";
+require_once "../both/authorization.php";
+$usertype='teacher';
+authorization($usertype);
 $profile = getprofile();
-$teacherid = $profile['user_id'] ?? null;
-$user_type = $profile['user_type'] ?? null;
-$nationalcode = $profile['nationalcode'] ?? null;
-validation($teacherid, $user_type);
+$teacherid = $profile['user_id'];
+$nationalcode = $profile['nationalcode'];
+
 $teachers = $pdo->prepare("SELECT class_start,title,class_end FROM classes join teachers on teachers.id=classes.teacher_id join week_day on week_day.id=class_day where 
  teachers.id=:id");
 $teachers->execute(["id" => "$teacherid"]);

@@ -1,16 +1,14 @@
 <?php
 session_start();
-require_once("../both/connection.php");
+require_once "../both/connection.php";
+require_once "../both/pncvalidation.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nationalcode = $_POST["nationalcode"];
-    $password = $_POST["password"];
-    $user_type = $_POST["user_type"];
-    if (strlen($password) < 8) {
-        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 250px; margin-left: 980px;">خطا:رمز عبور باید حداقل 8 کارکتر باشد</p>';
-    }
-    if (strlen($nationalcode) != 10) {
-        echo '<p style="color:rgb(225, 89, 89); font-size: 18px; background-color: black; width: 190px; margin-left: 980px; padding-left:60px; ">خطا: کدملی اشتباه است  </p>';
-    } else {
+    $pncv = pncodevalidation();
+    echo $pncv;
+    if ($pncv == 1) {
+        $nationalcode = $_POST["nationalcode"];
+        $password = $_POST["password"];
+        $user_type = $_POST["user_type"];
         $teacher = $pdo->prepare("select password,last_name,first_name,id from teachers where national_code=:nationalcode");
         $teacher->execute([":nationalcode" => "$nationalcode"]);
         $result = $teacher->fetch();
@@ -41,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
 ?>
 <html>
 
