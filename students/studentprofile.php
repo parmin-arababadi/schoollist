@@ -2,7 +2,6 @@
 session_start();
 require_once "../both/connection.php";
 require_once "../both/profile.php";
-require_once "svalidation.php";
 require_once "../both/authorization.php";
 $usertype='student';
 authorization($usertype);

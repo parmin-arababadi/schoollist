@@ -28,9 +28,9 @@ session_start();
                 placeholder="نام خانوادگی خود را وارد کنید">
             <label for="first_name"></label>
             <p class="teachertitle">کد ملی</p>
-            <input type="text" id="nationalCode" name="nationalCode" class="teacherform"
+            <input type="text" id="nationalcode" name="nationalcode" class="teacherform"
                 placeholder="کد ملی خود را وارد کنید">
-            <label for="nationalCode"></label>
+            <label for="nationalcode"></label>
             <p class="teachertitle"> شماره موبایل</p>
             <input type="text" id="phone_number" name="phone_number" class="teacherform" placeholder="09********* ">
             <label for="phone_number"></label>
@@ -41,7 +41,7 @@ session_start();
             <p class="teachertitle"> نام پدر</p>
             <input type="text" id="father_name" name="father_name" class="teacherform"
                 placeholder="نام پدر را وارد کنید">
-            <label for="phone_number"></label>
+            <label for="father_name"></label>
             <p class="teachertitle">تحصیلات</p>
             <input type="text" id="education" name="education" class="teacherform" placeholder="تحصیلات خود را بنویسید">
             <label for="education"></label>
@@ -60,6 +60,7 @@ session_start();
 <?php
 require_once "../both/connection.php";
 require_once "../both/pncvalidation.php";
+require_once "tsetsession.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $fvalidation = htmlspecialchars($_POST["first_name"]);
@@ -72,11 +73,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($pncv == 1) {
             $firstName = $_POST["first_name"];
             $lastName = $_POST["last_name"];
-            $fatherName = $_POST["father_name"];
+            $father_name = $_POST["father_name"];
             $birthDate = $_POST["birth_date"];
             $education = $_POST["education"];
             $phoneNumber = $_POST["phone_number"];
-            $national_code = $_POST["nationalCode"];
+            $national_code = $_POST["nationalcode"];
             $user_type = $_POST["user_type"];
             $password = $_POST["password"];
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -88,8 +89,8 @@ VALUES(:first_name,:last_name,:national_code,:father_name,:birth_date,:education
             $newstudent->execute([
                 ":first_name" => "$firstName",
                 ":last_name" => "$lastName",
-                ":national_code" => "$nationalCode",
-                ":father_name" => "$fatherName",
+                ":national_code" => "$national_code",
+                ":father_name" => "$father_name",
                 ":phone_number" => "$phoneNumber",
                 ":education" => "$education",
                 ":birth_date" => "$birthDate",
@@ -99,16 +100,8 @@ VALUES(:first_name,:last_name,:national_code,:father_name,:birth_date,:education
             $id->execute([":national_code" => "$national_code"]);
             $id = $id->fetch();
             $teacherid = $id['id'];
-            setcookie(
-                "first_name",
-                "$firstName",
-                time() + 3600,
-                "/"
-            );
-            $_SESSION["teacherid"] = $teacherid;
-            $_SESSION["nationalCode"] = $nationalCode;
-            $_SESSION["user_type"] = $user_type;
-
+            setsession($firstName,$teacherid,$national_code,$user_type);
+            
             header("Location: teachermenu.php");
             exit();
         }

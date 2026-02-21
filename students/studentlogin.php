@@ -45,51 +45,37 @@ session_start();
 <?php
 require_once "../both/connection.php";
 require_once "../both/pncvalidation.php";
+require_once "setsession.php";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $pvalidation = htmlspecialchars($_POST["password"]);
     if ($pvalidation) {
-            $pncv=pncodevalidation();
-            echo $pncv;
-            if ($pncv==1) {
-                $nationalcode = $_POST["nationalcode"];
-                $password = $_POST["password"];
-                $user_type = $_POST["user_type"];
-                $student = $pdo->prepare("select * from students where national_code=:nationalcode");
-                $student->execute(["nationalcode" => "$nationalcode"]);
-                $result = $student->fetch();
+        $pncv = pncodevalidation();
+        echo $pncv;
+        if ($pncv == 1) {
+            $nationalcode = $_POST["nationalcode"];
+            $password = $_POST["password"];
+            $user_type = $_POST["user_type"];
+            $student = $pdo->prepare("select * from students where national_code=:nationalcode");
+            $student->execute(["nationalcode" => "$nationalcode"]);
+            $result = $student->fetch();
 
-                if (!empty($result)) {
-                    $hashedPassword = $result['password'];
-                    $last_name = $result['last_name'];
-                    $studentid = $result['id'];
-                    $first_name = $result['first_name'];
-                    $x = password_verify($password, $hashedPassword);
-                    if ($x) {
-
-                        setcookie(
-                            "first_name",
-                            "$first_name",
-                            time() + 3600,
-                            "/"
-                        );
-                        setcookie(
-                            "last_name",
-                            "$last_name",
-                            time() + 3600,
-                            "/"
-                        );
-                        $_SESSION["id"] = $studentid;
-                        $_SESSION["user_type"] = $user_type;
-                        $_SESSION["nationalcode"] = $nationalcode;
-                        header("location:studentmenu.php");
-                        exit;
-                    } else {
-                        echo '<p class="error">رمز عبور اشتباه است</p>';
-                    }
+            if (!empty($result)) {
+                $hashedPassword = $result['password'];
+                $last_name = $result['last_name'];
+                $s_id = $result['id'];
+                $first_name = $result['first_name'];
+                $x = password_verify($password, $hashedPassword);
+                if ($x) {
+                    setsession($first_name,$s_id,$user_type,$nationalcode);
+                    header("location:studentmenu.php");
+                    exit;
                 } else {
-                    echo '<p class="error"> کد ملی اشتباه است یا ثبتنام نیستید </p>';
+                    echo '<p class="error">رمز عبور اشتباه است</p>';
                 }
+            } else {
+                echo '<p class="error"> کد ملی اشتباه است یا ثبتنام نیستید </p>';
             }
         }
     }
+}
 ?>

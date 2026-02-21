@@ -8,6 +8,8 @@ function getprofile()
         $profile["user_type"] = $_SESSION["user_type"];
         $profile["first_name"] = $_COOKIE["first_name"];
         return $profile;
+
     }
 }
+
 ?>

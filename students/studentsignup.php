@@ -40,9 +40,9 @@ session_start();
                     placeholder="رمز عبور را وارد کنید">
                 <label for="password"></label>
                 <p class="title4">نام پدر</p>
-                <input type="text" id="fathername" name="fathername" class="schoolform"
+                <input type="text" id="father_name" name="father_name" class="schoolform"
                     placeholder="نام پدر را وارد کنید">
-                <label for="fathername"></label>
+                <label for="father_name"></label>
                 <p class="title4">کد ملی</p>
                 <input type="number" id="nationalcode" name="nationalcode" class="schoolform"
                     placeholder="کد ملی خود را وارد کنید">
@@ -63,73 +63,58 @@ session_start();
 <?php
 require_once "../both/connection.php";
 require_once "../both/pncvalidation.php";
+require_once "setsession.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fvalidation = htmlspecialchars($_POST["first_name"]);
     $lvalidation = htmlspecialchars($_POST["last_name"]);
-    $ftvalidation = htmlspecialchars($_POST["fathername"]);
+    $ftvalidation = htmlspecialchars($_POST["father_name"]);
     if ($fvalidation && $lvalidation && $ftvalidation) {
-            $pncv = pncodevalidation();
-            echo $pncv;
-            if ($pncv == 1) {
-                $first_name = $_POST["first_name"];
-                $last_name = $_POST["last_name"];
-                $password = $_POST["password"];
-                $fathername = $_POST["fathername"];
-                $nationalcode = $_POST["nationalcode"];
-                $birth_date = $_POST["birth_date"];
-                $user_type = $_POST["user_type"];
+        $pncv = pncodevalidation();
+        echo $pncv;
+        if ($pncv == 1) {
+            // $fields = ['first_name', 'last_name', 'nationalcode','password',  'birth_date','father_name'];
+            // $data = [];
+            // foreach ($fields as $field) {
+            //     $data[$field] = $_POST[$field];
+            // }
+            // $user_type = $_POST['user_type'];
 
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                if (empty($first_name)) {
-                    echo '<p style="color:rgb(225, 89, 89); font-size: 18px;">خطا:نام کاربری را وارد کنید</p>';
+            $first_name = $_POST["first_name"];
+            $last_name = $_POST["last_name"];
+            $password = $_POST["password"];
+            $fathername = $_POST["father_name"];
+            $nationalcode = $_POST["nationalcode"];
+            $birth_date = $_POST["birth_date"];
+            $user_type = $_POST["user_type"];
 
-                }
-                $newstudent = $pdo->prepare('insert into students(first_name,last_name,password,father_name,national_code,birth_date)
-value(:first_name,:last_name,:password,:fathername,:nationalCode,:birth_date)');
-                $newstudent->execute([
-                    "first_name" => "$first_name",
-                    "password" => "$hashedPassword",
-                    "fathername" => "$fathername",
-                    "nationalCode" => "$nationalcode",
-                    "birth_date" => "$birth_date",
-                    "last_name" => "$last_name"
-                ]);
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            // $data['password'] = $hashedPassword;
+            if (empty($first_name)) {
+                echo '<p style="color:rgb(225, 89, 89); font-size: 18px;">خطا:نام کاربری را وارد کنید</p>';
 
-                $studentid = $pdo->prepare("select id from students where national_code=:nationalcode");
-                $studentid->execute([":nationalcode" => "$nationalcode"]);
-                $studentid = $studentid->fetch();
-                $s_id = $studentid['id'];
-                $_SESSION["id"] = $s_id;
-                $_SESSION["user_type"] = $user_type;
-                setcookie(
-                    "first_name",
-                    "$first_name",
-                    time() + 3600,
-                    "/"
-                );
-                setcookie(
-                    "last_name",
-                    "$last_name",
-                    time() + 3600,
-                    "/"
-                );
-                setcookie(
-                    "father_name",
-                    "$fathername",
-                    time() + 3600,
-                    "/"
-                );
-                $_SESSION["birth_date"] = $birthDate;
-                $_SESSION["phone_number"] = $phoneNumber;
-                $_SESSION["nationalcode"] = $nationalcode;
-                $_SESSION["user_type"] = $user_type;
-                $_SESSION["password"] = $hashedPassword;
-                header("Location:studentmenu.php");
-                exit();
             }
-        } else {
-            echo '<p class="error2">فیلد ها معتبر نیستند </p>';
+            $newstudent = $pdo->prepare('insert into students(first_name,last_name,password,father_name,national_code,birth_date)
+value(:first_name,:last_name,:password,:fathername,:nationalcode,:birth_date)');
+            $newstudent->execute([
+                "first_name" => "$first_name",
+                "last_name" => "$last_name",
+                "nationalcode" => "$nationalcode",
+                "password" => "$hashedPassword",
+                "birth_date" => "$birth_date",
+                "fathername" => "$fathername",
+            ]);
+            // $nationalcode = $data['nationalcode'];
+            $studentid = $pdo->prepare("select id from students where national_code=:nationalcode");
+            $studentid->execute([":nationalcode" => "$nationalcode"]);
+            $studentid = $studentid->fetch();
+            $s_id = $studentid['id'];
+            $setsession = setsession($first_name, $s_id, $user_type, $nationalcode);
+            header("Location:studentmenu.php");
+            exit();
         }
+    } else {
+        echo '<p class="error2">فیلد ها معتبر نیستند </p>';
     }
+}
 
 ?>

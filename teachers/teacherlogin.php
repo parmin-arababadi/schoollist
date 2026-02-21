@@ -2,6 +2,7 @@
 session_start();
 require_once "../both/connection.php";
 require_once "../both/pncvalidation.php";
+require_once "tsetsession.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pncv = pncodevalidation();
     echo $pncv;
@@ -12,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $teacher = $pdo->prepare("select password,last_name,first_name,id from teachers where national_code=:nationalcode");
         $teacher->execute([":nationalcode" => "$nationalcode"]);
         $result = $teacher->fetch();
-
+        
         if (!empty($result)) {
             $hashedPassword = $result['password'];
             $last_name = $result['last_name'];
@@ -20,15 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $teacherid = $result['id'];
             $x = password_verify($password, $hashedPassword);
             if ($x) {
-                setcookie(
-                    "first_name",
-                    $first_name,
-                    time() + 3600,
-                    "/"
-                );
-                $_SESSION["id"] = $teacherid;
-                $_SESSION["nationalcode"] = $nationalcode;
-                $_SESSION["user_type"] = $user_type;
+                setsession($first_name,$teacherid,$nationalcode,$user_type);
                 header("location:teachermenu.php");
                 exit;
             } else {
