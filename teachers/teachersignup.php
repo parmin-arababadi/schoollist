@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ftvalidation = htmlspecialchars($_POST["father_name"]);
     $evalidation = htmlspecialchars($_POST["education"]);
     if ($evalidation && $ftvalidation && $lvalidation && $fvalidation) {
-        $pncv = pncodevalidation();
+    $pncv = pncvalidation($_POST['password'],$_POST['nationalcode']);
         echo $pncv;
         if ($pncv == 1) {
             $firstName = $_POST["first_name"];

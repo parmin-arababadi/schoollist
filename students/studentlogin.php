@@ -49,7 +49,7 @@ require_once "setsession.php";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $pvalidation = htmlspecialchars($_POST["password"]);
     if ($pvalidation) {
-        $pncv = pncodevalidation();
+        $pncv = pncvalidation($_POST['password'],$_POST['nationalcode']);
         echo $pncv;
         if ($pncv == 1) {
             $nationalcode = $_POST["nationalcode"];

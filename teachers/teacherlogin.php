@@ -4,7 +4,7 @@ require_once "../both/connection.php";
 require_once "../both/pncvalidation.php";
 require_once "tsetsession.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pncv = pncodevalidation();
+    $pncv = pncvalidation($_POST['password'],$_POST['nationalcode']);
     echo $pncv;
     if ($pncv == 1) {
         $nationalcode = $_POST["nationalcode"];
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $teacher = $pdo->prepare("select password,last_name,first_name,id from teachers where national_code=:nationalcode");
         $teacher->execute([":nationalcode" => "$nationalcode"]);
         $result = $teacher->fetch();
-        
+
         if (!empty($result)) {
             $hashedPassword = $result['password'];
             $last_name = $result['last_name'];
