@@ -1,22 +1,25 @@
 <?php
 session_start();
+require_once "../both/profile.php";
+require_once "../both/authorization.php";
+$usertype='teacher';
+authorization($usertype);
+// putfile("C:\Users\G A  COMPUTERS\Documents\doc\parmin.txt","how are you");
+// $file=getfile("C:\Users\G A  COMPUTERS\Documents\doc\parmin.txt");
+// die(var_dump($file));
+$profile = getprofile();
+$teacherid = $profile["user_id"];
+$user_type = $profile["user_type"];
+$nationalcode = $profile["nationalcode"];
 
-    $user_type = $_SESSION["user_type"];
-    $first_name = $_SESSION["first_name"];
-    $last_name = $_SESSION["last_name"];
-    $nationalcode = $_SESSION["nationalcode"];
 
-if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['nationalcode'], $_SESSION['last_name']) || $_SESSION['user_type']!='teacher') {
-    header("location:teacherlogin.php");
-    exit;
-}
 ?>
 
 <html>
 
 <head>
     <title>mainmenu</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 
@@ -54,11 +57,11 @@ if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['nationalc
 
 <body>
     <div class="head">
-        <h3>سلام <br><?php echo $_SESSION["first_name"]; ?> <br>عزیز! خوش امدید</h3>
+        <h3>سلام <br><?php echo $_COOKIE["first_name"]; ?> <br>عزیز! خوش امدید</h3>
     </div>
     <div class="mainheader">
 
-        <a href="mainmenu.php"><i class='fas fa-bars'></i> منو اصلی</a>
+        <a href="teachermenu.php"><i class='fas fa-bars'></i> منو اصلی</a>
         <a href="#classes"><i class='fas fa-school'></i>کلاس های من</a>
         <a href="#marks"><i class='fas fa-book'></i>نمرات دانش آموزان من</a>
 
@@ -67,13 +70,13 @@ if (!isset($_SESSION['user_type'], $_SESSION['first_name'], $_SESSION['nationalc
     <div style="text-align: center; direction: rtl;">
         <div id="classes">
             <a href="teacherclasses.php">
-                <img src="class.jpg">
+                <img src="../images/class.jpg">
                 <div style="color: black; margin-top: 10px">دیدن اطلاعات کلاس های من</div>
             </a>
         </div>
         <div id="marks">
-            <a href="marklist.php">
-                <img src="School-Marks.jpg">
+            <a href="tmarklist.php">
+                <img src="../images/School-Marks.jpg">
                 <div style="color: black; margin-top: 10px"> نمرات دانش آموزان من</div>
             </a>
         </div>

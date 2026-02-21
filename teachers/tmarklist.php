@@ -1,9 +1,14 @@
 <?php
 session_start();
-require_once "connection.php";
-$first_name = $_SESSION["first_name"];
-$last_name = $_SESSION["last_name"];
-$nationalCode = $_SESSION["nationalcode"];
+require_once "../both/connection.php";
+require_once "../both/profile.php";
+require_once "../both/authorization.php";
+$usertype='teacher';
+authorization($usertype);
+$profile = getprofile();
+$teacherid = $profile['user_id'];
+$user_type = $profile['user_type'];
+$nationalcode = $profile['nationalcode'];
 
 ?>
 
@@ -11,7 +16,7 @@ $nationalCode = $_SESSION["nationalcode"];
 
 <head>
     <title>marklist</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 
@@ -43,9 +48,9 @@ $nationalCode = $_SESSION["nationalcode"];
     <div class="note"> با کلیک بر روی ثبت نمره,نمره ی جدید را وارد کنید</div>
     <div class="mainheader">
 
-        <a href="mainmenu.php"><i class='fas fa-bars'></i> منو اصلی</a>
+        <a href="teachermenu.php"><i class='fas fa-bars'></i> منو اصلی</a>
         <a href="teacherclasses.php"><i class='fas fa-school'></i>کلاس های من</a>
-        <a href="marklist.php"><i class='fas fa-book'></i>نمرات دانش آموزان من</a>
+        <a href="tmarklist.php"><i class='fas fa-book'></i>نمرات دانش آموزان من</a>
 
         <a href="#contact"><i class='fas fa-phone'></i>تماس با ما </a>
     </div>
@@ -54,10 +59,8 @@ $nationalCode = $_SESSION["nationalcode"];
             <h3 class="marktitle">student marks</h3>
         </div>
         <form method="post">
-            <input type="text" name="first_name" id="first_name" class="markform" placeholder="نام دانش آموز">
-            <label for="first_name"></label>
-            <input type="text" name="last_name" id="last_name" class="markform" placeholder="نام خانوادگی دانش آموز">
-            <label for="last_name"></label>
+           <input type="text" name="snationalcode" id="snationalcode" class="markform" placeholder="کد ملی دانش اموز">
+           <label for="snationalcode"></label>
             <input type="text" name="mark" id="mark" class="markform" placeholder="نمره دانش آموز">
             <label for="mark"></label>
             <input type="text" name="classnum" id="classnum" class="markform" placeholder=" شماره کلاس دانش آموز">

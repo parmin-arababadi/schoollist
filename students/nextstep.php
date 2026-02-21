@@ -1,29 +1,26 @@
 <?php
 session_start();
-require_once 'connection.php';
-$nationalcode = $_SESSION["national_code"];
-$tfirst_name = $_SESSION['tfirst_name'];
-$tlast_name = $_SESSION['tlast_name'];
-$lesson = $_SESSION['lesson'];
-$first_name = $_SESSION['first_name'];
-$last_name = $_SESSION['last_name'];
-$studentid = $pdo->prepare('select id from students where national_code=:national_code');
-$studentid->execute([":national_code" => "$nationalcode"]);
-$studentsid = $studentid->fetch();
-$sid = $studentsid['id'];
-$teacherid = $pdo->prepare('select id from teachers where first_name=:tfirst_name and last_name=:tlast_name');
-$teacherid->execute([":tfirst_name" => "$tfirst_name", ":tlast_name" => "$tlast_name"]);
-$ids = $teacherid->fetch();
-$id = $ids['id'];
-$c = $pdo->prepare('select lesson,title,classes.id,class_start,class_end from classes join teachers on teachers.id=classes.teacher_id join lessons on lessons.id=classes.lesson_id join week_day on week_day.id=classes.class_day where teachers.id=:id');
-$c->execute([":id" => "$id"]);
+require_once '../both/connection.php';
+require_once "../both/profile.php";
+require_once "../both/authorization.php";
+$usertype='student';
+authorization($usertype);
+$profile = getprofile();
+$studentid = $profile["user_id"];
+$user_type = $profile["user_type"];
+$class_id = $_SESSION['classid'];
+$teacherid = $_SESSION['teacherid'];
+$lessonid = $_SESSION['lessonid'];
+$c = $pdo->prepare('select teachers.first_name,lesson,title,classes.id,class_start,class_end from classes join teachers on teachers.id=classes.teacher_id join lessons on lessons.id=classes.lesson_id join week_day on week_day.id=classes.class_day where teachers.id=:teacherid and lesson_id=:lessonid');
+$c->execute([":teacherid" => "$teacherid", ":lessonid" => "$lessonid"]);
 $classes = $c->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <html>
 
 <head>
     <title>registration</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -97,6 +94,7 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
                 <th>ساعت شروع </th>
                 <th>روز کلاس</th>
                 <th>نام درس</th>
+                <th>نام معلم</th>
                 <th>شماره کلاس</th>
             </tr>
             <?php
@@ -107,6 +105,7 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
                     echo "<td>" . $class['class_start'] . "</td>";
                     echo "<td>" . $class['title'] . "</td>";
                     echo "<td>" . $class['lesson'] . "</td>";
+                    echo "<td>" . $class['first_name'] . "</td>";
                     echo "<td>" . $class['id'] . "</td>";
                 }
             } else {
@@ -116,7 +115,7 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
             ?>
         </table>
         <form method="post" style="direction: rtl; margin-top:20px;">
-            <input type="text" name="classid" id="classid" class="form4"
+            <input type="number" name="classid" id="classid" class="form4"
                 placeholder="شماره کلاس مورد نظر خود را وارد کنید">
             <label for="classid"></label>
             <input type="submit" name="submit" id="submit" class="divc" value="ثبت">
@@ -153,14 +152,41 @@ $classes = $c->fetchAll(PDO::FETCH_ASSOC);
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $classid = $_POST['classid'];
-    foreach ($classes as $class) {
-        if ($class['id'] == $classid) {
-            $newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
-            $newclass->execute([":student" => "$sid", ":class" => "$classid"]);
-            header("location:studentmenu.php");
-            exit;
+    $oldclass = $pdo->prepare("select * from student_classes where class_id=:classid and student_id=:studentid ");
+    $oldclass->execute([":classid" => "$classid", ":studentid" => "$studentid"]);
+    $oldclass = $oldclass->fetch();
+    $timecheck = $pdo->prepare("select class_start,class_day,class_end from classes where classes.id=:classid");
+    $timecheck->execute(["classid" => "$classid"]);
+    $timecheck = $timecheck->fetch();
+    $classstart = $timecheck['class_start'];
+    $classend = $timecheck['class_end'];
+    $classday = $timecheck['class_day'];
+    $oldtime = $pdo->prepare("select class_start,class_end,class_day from classes join student_classes on classes.id=student_classes.id where student_id=:studentid and class_start>=:classstart and class_day=:classday");
+    $oldtime->execute([":studentid" => "$studentid", ":classstart" => "$classstart", "classday" => "$classday"]);
+    $oldtime = $oldtime->fetchAll();
+    foreach ($oldtime as $old) {
+        $oldstart = $old['class_start'];
+        $oldend = $old['class_end'];
+        $oldday = $old['class_day'];
+    }
+
+
+    if (!empty($oldstart || $oldend || $oldday)) {
+        echo '<p class="error2"> ساعت کلاس شما با کلاس های دیگرتان تداخل دارند</p>';
+    } else {
+        if (empty($oldclass)) {
+            foreach ($classes as $class) {
+                if ($class['id'] == $classid) {
+                    $newclass = $pdo->prepare('insert into student_classes (student_id,class_id) values(:student,:class)');
+                    $newclass->execute([":student" => "$studentid", ":class" => "$classid"]);
+                    header("location:studentmenu.php");
+                    exit;
+                } else {
+                    echo '<p class="error" style="height: 50px;"> از شماره کلاس های نمایش داده شده انتخاب کنید </p>';
+                }
+            }
         } else {
-            echo '<p class="error" style="height: 50px;"> از شماره کلاس های نمایش داده شده انتخاب کنید </p>';
+            echo '<p class="error2"> خطا:این کلاس یکبار برای شما ثبت شده</p>';
         }
     }
 }

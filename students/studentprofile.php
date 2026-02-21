@@ -1,10 +1,15 @@
 <?php
 session_start();
-require_once "connection.php";
-$first_name = $_SESSION["first_name"];
-$last_name = $_SESSION["last_name"];
-$sprofile = $pdo->prepare('select first_name,last_name,father_name,national_code,birth_date from students where first_name=:first_name and last_name=:last_name');
-$sprofile->execute([":first_name" => "$first_name", ":last_name" => "$last_name"]);
+require_once "../both/connection.php";
+require_once "../both/profile.php";
+require_once "../both/authorization.php";
+$usertype='student';
+authorization($usertype);
+$profile = getprofile();
+$studentid = $profile["user_id"];
+$user_type = $profile["user_type"];
+$sprofile = $pdo->prepare('select first_name,last_name,father_name,national_code,birth_date from students where id=:id');
+$sprofile->execute([":id" => "$studentid"]);
 $studentsprofile = $sprofile->fetchAll(pdo::FETCH_ASSOC);
 
 ?>
@@ -12,7 +17,7 @@ $studentsprofile = $sprofile->fetchAll(pdo::FETCH_ASSOC);
 
 <head>
     <title>profile</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>

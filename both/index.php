@@ -2,7 +2,7 @@
 
 <head>
     <title>home</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -35,7 +35,7 @@
 <body>
     <div class="background-video">
         <video autoplay muted loop>
-            <source src="schoolvideo.mp4" type="video/mp4">
+            <source src="../images/schoolvideo.mp4" type="video/mp4">
         </video>
         <div class="videotext">
             <h2 style="color: #94c0ecff;">آینده‌ای روشن از همین‌جا آغاز می‌شود</h2>
@@ -48,25 +48,25 @@
             </p>
             <p style="margin-top: 20px;">
                 <bold>همین امروز ثبت‌نام کنید و به جمع دانش‌آموزان موفق بپیوندید</bold>
-                <a href="studentsignup.php" class="sbmt">ثبت‌نام</a>
+                <a href="../students/studentsignup.php" class="sbmt">ثبت‌نام</a>
 
         </div>
 
 
     </div>
     <div class="indexheader">
-        <img src="schoolicon2.jpg" class="logo">
-        <a href="studentlogin.php" style="margin-top: 30px;">
+        <img src="../images/schoolicon2.jpg" class="logo">
+        <a href="../students/studentlogin.php" style="margin-top: 30px;">
             <i class='fas fa-child'></i>
             ورود دانش آموز
         </a>
-        <a style="margin-top: 30px;" href="teacherlogin.php">
+        <a style="margin-top: 30px;" href="../teachers/teacherlogin.php">
             <i class='fa fa-male'></i>
             ورود معلم
         </a>
-        <a style="margin-top: 30px;" href=".php">
+        <a style="margin-top: 30px;" href="../teachers/teachersignup.php">
             <i class='fas fa-angle-left'></i>
-            درباره ما
+             ثبت‌نام معلم
         </a>
         <a href="#contact" style=" margin-top: 30px;"><i class='fas fa-phone'></i>تماس با ما </a>
     </div>

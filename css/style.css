@@ -636,7 +636,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     text-align: center;
     color: aliceblue;
     background-color: rgba(77, 77, 77, 0.2);
@@ -644,7 +644,7 @@ body {
     display: block;
 }
 
-.sbmt{
+.sbmt {
     position: absolute;
     width: 100px;
     text-align: center;
@@ -655,11 +655,138 @@ body {
     background-color: transparent;
     padding-top: 10px;
     padding-right: 7px;
-    padding-left:7px;
+    padding-left: 7px;
     padding-bottom: 10px;
     top: 89%;
     left: 50%;
     transform: translate(-50%);
     color: white;
     margin-top: 30px;
+}
+
+.teacher table {
+    border: black 1px solid;
+    width: 500px;
+    height: 270px;
+}
+
+.teacher th {
+    border-bottom: black 1px solid;
+    padding-right: 10px;
+    border-right: black 1px solid;
+}
+
+.teacher td {
+    border-bottom: black 1px solid;
+    padding-right: 10px;
+    border-right: black 1px solid;
+}
+
+.teacher table,
+th,
+td {
+    border-collapse: collapse;
+    text-align: center;
+    justify-content: center;
+    margin-top: 30px;
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.lesson table {
+    border: black 1px solid;
+    width: 500px;
+    height: 270px;
+}
+
+.lesson th {
+    border-bottom: black 1px solid;
+    padding-right: 10px;
+    border-right: black 1px solid;
+}
+
+.lesson td {
+    border-bottom: black 1px solid;
+    padding-right: 10px;
+    border-right: black 1px solid;
+}
+
+.lesson table,
+th,
+td {
+    border-collapse: collapse;
+    text-align: center;
+    justify-content: center;
+    margin-top: 30px;
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.input {
+    width: 230px;
+    height: 38px;
+    border: 1.5px rgb(178, 176, 176) solid;
+    border-radius: 10px;
+    padding-left: 10px;
+    margin-left: 1000px;
+    margin-top: 10px;
+    direction: rtl;
+    text-align: right;
+}
+
+.continue{
+    justify-content: left;
+    margin-left: 1185px;
+    background-color: rgb(52, 69, 248);
+    height: 30px;
+    width: 40px;
+    border-radius: 4px;
+    text-align: center;
+    direction: rtl;
+    outline: none;
+    box-shadow: none;
+    border: rgb(52, 69, 248);
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.error2{
+    background-color: rgb(163, 0, 0);
+    width: 260px;
+    height: 45px;
+    text-align: right;
+    font-size: 20px;
+    direction: rtl;
+    margin-left: 870px;
+    margin-right: 10px;
+    outline: none;
+    box-shadow: none;
+    border: rgb(163, 0, 0);
+}
+.error3{   
+    background-color: rgb(163, 0, 0);
+    width: 260px;
+    height: 55px;
+    text-align: right;
+    font-size: 20px;
+    direction: rtl;
+    margin-left: 870px;
+    margin-right: 10px;
+    outline: none;
+    box-shadow: none;
+    border: rgb(163, 0, 0);
+}
+.print{
+    width: 150px;
+    height: 30px;
+    background-color: rgb(83, 83, 241);
+    border: rgb(83, 83, 241);
+    margin-left: 1080px;
+    margin-top: 10px;
+    padding-right: 5px;
+    padding-top: 5px;
+    text-align: right;
+    justify-content: right;
+    border-radius: 10px;
 }
